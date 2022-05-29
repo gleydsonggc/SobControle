@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#F0F0F0"
+    tools:context=".ui.activities.InicialActivity">
+
+    <TextView
+        android:id="@+id/activity_inicial_tv_boas_vindas"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="Bem-vindo(a) ao\nSob Controle!"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/activity_inicial_bt_entrar"
+        android:text="Entrar"
+        android:onClick="entrar"
+        android:backgroundTint="@color/design_default_color_primary_dark"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/activity_inicial_bt_cadastrar"
+        android:text="Cadastrar"
+        android:onClick="cadastrar"
+        android:backgroundTint="@android:color/background_light"
+        android:textColor="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
