@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.ContaActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/activity_conta_tv_nome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nome"
+            android:textColor="#2196F3"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/activity_conta_et_nome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nome"
+            android:inputType="textPersonName"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/activity_conta_tv_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="E-mail"
+            android:textColor="#2196F3"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/activity_conta_et_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="E-mail"
+            android:inputType="textEmailAddress"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/activity_conta_tv_senha"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Senha (no mínimo 6 caracteres)"
+            android:textColor="#2196F3"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/activity_conta_et_senha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/activity_conta_bt_salvar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="salvarConta"
+            android:text="Salvar" />
+
+    </LinearLayout>
+
+</ScrollView>

@@ -35,5 +35,9 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Não há usuário cadastrado com esses dados.", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        Intent intent = new Intent(this, PrincipalActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }

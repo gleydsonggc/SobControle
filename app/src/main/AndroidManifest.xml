@@ -10,6 +10,30 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SobControle">
         <activity
+            android:name=".ui.activities.PrincipalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.PerfisActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.PerfilEdicaoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.PerfilCadastroActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.ControlavelEdicaoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.ControlavelCadastroActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.ControlaveisActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.ContaActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activities.CadastroActivity"
             android:exported="false" />
         <activity
