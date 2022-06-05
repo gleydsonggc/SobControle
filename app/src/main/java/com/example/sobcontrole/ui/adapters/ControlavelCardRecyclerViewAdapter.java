@@ -23,6 +23,7 @@ public class ControlavelCardRecyclerViewAdapter extends RecyclerView.Adapter<Con
 
     public ControlavelCardRecyclerViewAdapter(List<Controlavel> controlaveis) {
         this.controlaveis = controlaveis;
+        filtrarControlaveisDeAcordoComHabilitado();
         filtrarControlaveisDeAcordoComPerfilAtivo();
     }
 
@@ -47,6 +48,7 @@ public class ControlavelCardRecyclerViewAdapter extends RecyclerView.Adapter<Con
 
     public void setControlaveis(List<Controlavel> controlaveis) {
         this.controlaveis = controlaveis;
+        filtrarControlaveisDeAcordoComHabilitado();
         filtrarControlaveisDeAcordoComPerfilAtivo();
     }
 
@@ -60,8 +62,17 @@ public class ControlavelCardRecyclerViewAdapter extends RecyclerView.Adapter<Con
                 .collect(Collectors.toList());
     }
 
+    private void filtrarControlaveisDeAcordoComHabilitado() {
+        Usuario usuarioLogado = UsuarioRepository.getInstance().getUsuarioLogado();
+        this.controlaveis = controlaveis.stream()
+                .filter(Controlavel::isHabilitado)
+                .collect(Collectors.toList());
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView textView;
+        private Controlavel controlavel;
+        private View itemView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -75,6 +86,8 @@ public class ControlavelCardRecyclerViewAdapter extends RecyclerView.Adapter<Con
         }
 
         public void bind(Controlavel controlavel) {
+            this.controlavel = controlavel;
+//            this.itemView.setVisibility(controlavel.isHabilitado() ? View.VISIBLE : View.GONE);
             textView.setText(controlavel.getNome());
         }
     }

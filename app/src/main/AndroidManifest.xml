@@ -22,12 +22,6 @@
             android:name=".ui.activities.PerfilCadastroActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activities.ControlavelEdicaoActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.activities.ControlavelCadastroActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.activities.ControlaveisActivity"
             android:exported="false" />
         <activity

@@ -36,19 +36,11 @@ public class PrincipalActivity extends AppCompatActivity {
         repository = UsuarioRepository.getInstance();
         usuarioLogado = repository.getUsuarioLogado();
         recyclerView = findViewById(R.id.activity_principal_recyclerview);
-        adapter = new ControlavelCardRecyclerViewAdapter(getControlaveis());
+        adapter = new ControlavelCardRecyclerViewAdapter(usuarioLogado.getControlaveis());
 
         int qtdColunas = 2;
         recyclerView.setLayoutManager(new GridLayoutManager(this, qtdColunas));
         recyclerView.setAdapter(adapter);
-    }
-
-    @NonNull
-    private List<Controlavel> getControlaveis() {
-        return usuarioLogado.getControlaveis()
-                .stream()
-                .sorted(Comparator.comparing(Controlavel::getNome, String.CASE_INSENSITIVE_ORDER))
-                .collect(Collectors.toList());
     }
 
     @Override
@@ -83,7 +75,7 @@ public class PrincipalActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        adapter.setControlaveis(getControlaveis());
+        adapter.setControlaveis(usuarioLogado.getControlaveis());
         adapter.notifyDataSetChanged();
     }
 }

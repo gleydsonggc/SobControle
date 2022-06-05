@@ -62,12 +62,12 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
         }
 
 
-        ArrayAdapter<Controlavel> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_checked, usuarioLogado.getControlaveis());
+        ArrayAdapter<Controlavel> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_checked, usuarioLogado.getControlaveis().stream().filter(Controlavel::isHabilitado).collect(Collectors.toList()));
 
         listView.setAdapter(arrayAdapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-        for (int position = 0; position < usuarioLogado.getControlaveis().size(); position++) {
+        for (int position = 0; position < listView.getCount(); position++) {
             Controlavel controlavel = (Controlavel) listView.getItemAtPosition(position);
             this.listView.setItemChecked(position, perfil.podeAcessarControlavel(controlavel.getId()));
         }

@@ -19,6 +19,7 @@ import com.example.sobcontrole.repository.UsuarioRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PerfilCadastroActivity extends AppCompatActivity {
 
@@ -38,7 +39,7 @@ public class PerfilCadastroActivity extends AppCompatActivity {
         usuarioLogado = repository.getUsuarioLogado();
         etNome = findViewById(R.id.activity_perfil_cadastro_et_nome);
         listView = findViewById(R.id.activity_perfil_cadastro_lv_controlaveis);
-        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_checked, usuarioLogado.getControlaveis());
+        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_checked, usuarioLogado.getControlaveis().stream().filter(Controlavel::isHabilitado).collect(Collectors.toList()));
 
         listView.setAdapter(arrayAdapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);

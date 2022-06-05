@@ -2,6 +2,7 @@ package com.example.sobcontrole.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Usuario implements Serializable {
@@ -10,20 +11,26 @@ public class Usuario implements Serializable {
     private String nome;
     private String email;
     private String senha;
-    private List<Controlavel> controlaveis;
+    private List<Controlavel> controlaveis = Arrays.asList(new Controlavel[8]);
     private List<Perfil> perfis;
     private Perfil perfilAtivo;
 
     public Usuario() {
-        this.controlaveis = new ArrayList<>();
+        inicializarControlaveis();
         this.perfis = new ArrayList<>();
     }
 
+    private void inicializarControlaveis() {
+        for (int i = 0; i < controlaveis.size(); i++) {
+            controlaveis.set(i, new Controlavel());
+        }
+    }
+
     public Usuario(String nome, String email, String senha) {
+        inicializarControlaveis();
         this.nome = nome;
         this.email = email;
         this.senha = senha;
-        this.controlaveis = new ArrayList<>();
         this.perfis = new ArrayList<>();
     }
 

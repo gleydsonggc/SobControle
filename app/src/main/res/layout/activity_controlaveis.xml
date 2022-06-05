@@ -1,15 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:fillViewport="true"
+
     tools:context=".ui.activities.ControlaveisActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/activity_controlaveis_recyclerview"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Relé 1"
+            android:textColor="#2196F3"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/cbControlavel1"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv1" />
+
+        <EditText
+            android:id="@+id/etControlavel1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv1"
+            android:layout_toRightOf="@+id/cbControlavel1"
+            android:hint="Nome do controlável" />
+
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cbControlavel1"
+            android:text="Relé 2"
+            android:textColor="#2196F3"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/cbControlavel2"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv2" />
+
+        <EditText
+            android:id="@+id/etControlavel2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv2"
+            android:layout_toRightOf="@id/cbControlavel2"
+            android:hint="Nome do controlável" />
+
+        <TextView
+            android:id="@+id/tv3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cbControlavel2"
+            android:text="Relé 3"
+            android:textColor="#2196F3"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/cbControlavel3"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv3" />
+
+        <EditText
+            android:id="@+id/etControlavel3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv3"
+            android:layout_toRightOf="@id/cbControlavel3"
+            android:hint="Nome do controlável" />
+
+        <TextView
+            android:id="@+id/tv4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cbControlavel3"
+            android:text="Relé 4"
+            android:textColor="#2196F3"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/cbControlavel4"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv4" />
+
+        <EditText
+            android:id="@+id/etControlavel4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv4"
+            android:layout_toRightOf="@id/cbControlavel4"
+            android:hint="Nome do controlável" />
+
+        <TextView
+            android:id="@+id/tv5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cbControlavel4"
+            android:text="Relé 5"
+            android:textColor="#2196F3"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/cbControlavel5"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv5" />
+
+        <EditText
+            android:id="@+id/etControlavel5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv5"
+            android:layout_toRightOf="@id/cbControlavel5"
+            android:hint="Nome do controlável" />
+
+        <TextView
+            android:id="@+id/tv6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cbControlavel5"
+            android:text="Relé 6"
+            android:textColor="#2196F3"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/cbControlavel6"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv6" />
+
+        <EditText
+            android:id="@+id/etControlavel6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv6"
+            android:layout_toRightOf="@id/cbControlavel6"
+            android:hint="Nome do controlável" />
+
+        <TextView
+            android:id="@+id/tv7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cbControlavel6"
+            android:text="Relé 7"
+            android:textColor="#2196F3"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/cbControlavel7"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv7" />
+
+        <EditText
+            android:id="@+id/etControlavel7"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv7"
+            android:layout_toRightOf="@id/cbControlavel7"
+            android:hint="Nome do controlável" />
+
+        <TextView
+            android:id="@+id/tv8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/cbControlavel7"
+            android:text="Relé 8"
+            android:textColor="#2196F3"
+            android:textStyle="bold" />
+
+        <CheckBox
+            android:id="@+id/cbControlavel8"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv8" />
+
+        <EditText
+            android:id="@+id/etControlavel8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv8"
+            android:layout_toRightOf="@id/cbControlavel8"
+            android:hint="Nome do controlável" />
+
+    </RelativeLayout>
+</ScrollView>

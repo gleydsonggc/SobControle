@@ -1,34 +1,26 @@
 package com.example.sobcontrole.ui.activities;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CheckBox;
+import android.widget.EditText;
 
 import com.example.sobcontrole.R;
 import com.example.sobcontrole.model.Controlavel;
 import com.example.sobcontrole.model.Usuario;
 import com.example.sobcontrole.repository.UsuarioRepository;
-import com.example.sobcontrole.ui.adapters.ControlavelLinearRecyclerViewAdapter;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ControlaveisActivity extends AppCompatActivity {
 
     private UsuarioRepository repository;
     private Usuario usuarioLogado;
-    private RecyclerView recyclerView;
-    private ControlavelLinearRecyclerViewAdapter adapter;
+
+    private EditText[] etControlavel;
+    private CheckBox[] cbControlavel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,19 +30,33 @@ public class ControlaveisActivity extends AppCompatActivity {
 
         repository = UsuarioRepository.getInstance();
         usuarioLogado = repository.getUsuarioLogado();
-        recyclerView = findViewById(R.id.activity_controlaveis_recyclerview);
-        adapter = new ControlavelLinearRecyclerViewAdapter(getControlaveis());
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
-    }
+        etControlavel = new EditText[]{
+                findViewById(R.id.etControlavel1),
+                findViewById(R.id.etControlavel2),
+                findViewById(R.id.etControlavel3),
+                findViewById(R.id.etControlavel4),
+                findViewById(R.id.etControlavel5),
+                findViewById(R.id.etControlavel6),
+                findViewById(R.id.etControlavel7),
+                findViewById(R.id.etControlavel8)
+        };
 
-    @NonNull
-    private List<Controlavel> getControlaveis() {
-        return usuarioLogado.getControlaveis()
-                .stream()
-                .sorted(Comparator.comparing(Controlavel::getNome, String.CASE_INSENSITIVE_ORDER))
-                .collect(Collectors.toList());
+        cbControlavel = new CheckBox[]{
+                findViewById(R.id.cbControlavel1),
+                findViewById(R.id.cbControlavel2),
+                findViewById(R.id.cbControlavel3),
+                findViewById(R.id.cbControlavel4),
+                findViewById(R.id.cbControlavel5),
+                findViewById(R.id.cbControlavel6),
+                findViewById(R.id.cbControlavel7),
+                findViewById(R.id.cbControlavel8)
+        };
+
+        for (int i = 0; i < etControlavel.length; i++) {
+            cbControlavel[i].setChecked(usuarioLogado.getControlaveis().get(i).isHabilitado());
+            etControlavel[i].setText(usuarioLogado.getControlaveis().get(i).getNome());
+        }
     }
 
     @Override
@@ -62,29 +68,28 @@ public class ControlaveisActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.activity_controlaveis_menu_item_adicionar:
-                if (usuarioLogado.getControlaveis().size() >= 8) {
-                    new AlertDialog.Builder(this)
-                            .setTitle("Limite atingido")
-                            .setMessage("Você já atingiu o máximo de 8 controláveis.")
-                            .setPositiveButton(android.R.string.ok, (dialog, id) -> {})
-                            .show();
-                    return true;
-                }
-                startActivityForResult(new Intent(this, ControlavelCadastroActivity.class), 10);
+            case R.id.activity_controlaveis_menu_salvar:
+                salvarControlaveis();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            adapter.setControlaveis(getControlaveis());
-            adapter.notifyDataSetChanged();
+    private void salvarControlaveis() {
+        for (int i = 0; i < etControlavel.length; i++) {
+            String nome = etControlavel[i].getText().toString().trim();
+            cbControlavel[i].setChecked(cbControlavel[i].isChecked() && !nome.isEmpty());
+            boolean checkBoxHabilitado = cbControlavel[i].isChecked();
+            Controlavel controlavel = usuarioLogado.getControlaveis().get(i);
+            controlavel.setNome(nome);
+            controlavel.setHabilitado(checkBoxHabilitado);
+            if (!checkBoxHabilitado) {
+                usuarioLogado.getPerfis().forEach(p -> p.getControlaveisPermitidos().remove(controlavel.getId()));
+            }
         }
+        repository.atualizar(usuarioLogado);
+        finish();
     }
 
 }

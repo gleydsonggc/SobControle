@@ -31,23 +31,31 @@ public final class UsuarioRepository {
     }
 
     private UsuarioRepository() {
-        ArrayList<Controlavel> controlaveis = new ArrayList<>();
-        controlaveis.add(new Controlavel("Quarto"));
-        controlaveis.add(new Controlavel("Sala"));
-        controlaveis.add(new Controlavel("Ar-condicionadoo"));
-        controlaveis.add(new Controlavel("Cafeteira"));
-        controlaveis.add(new Controlavel("Ventilador"));
-        controlaveis.add(new Controlavel("Cozinha"));
-        controlaveis.add(new Controlavel("Porta"));
-        controlaveis.add(new Controlavel("Despensa"));
+//        ArrayList<Controlavel> controlaveis = new ArrayList<>();
+//        controlaveis.add(new Controlavel("Quarto"));
+//        controlaveis.add(new Controlavel("Sala"));
+//        controlaveis.add(new Controlavel("Ar-condicionadoo"));
+//        controlaveis.add(new Controlavel("Cafeteira"));
+//        controlaveis.add(new Controlavel("Ventilador"));
+//        controlaveis.add(new Controlavel("Cozinha"));
+//        controlaveis.add(new Controlavel("Porta"));
+//        controlaveis.add(new Controlavel("Despensa"));
+
+        Usuario usuario = new Usuario("Fulano da Silva", "fulano@fulanomail.com", "1");
+//        usuario.getControlaveis().addAll(controlaveis);
+        usuario.getControlaveis().set(0, new Controlavel("Quarto"));
+        usuario.getControlaveis().set(1, new Controlavel("Sala"));
+        usuario.getControlaveis().set(2, new Controlavel("Ar-condicionadoo"));
+        usuario.getControlaveis().set(3, new Controlavel("Cafeteira"));
+        usuario.getControlaveis().set(4, new Controlavel("Ventilador"));
+        usuario.getControlaveis().set(5, new Controlavel("Cozinha"));
+        usuario.getControlaveis().set(6, new Controlavel("Porta"));
+        usuario.getControlaveis().set(7, new Controlavel("Despensa"));
 
         ArrayList<Perfil> perfis = new ArrayList<>();
         perfis.add(new Perfil("Filho 1"));
         perfis.add(new Perfil("Filho 2"));
         perfis.add(new Perfil("Filho 3"));
-
-        Usuario usuario = new Usuario("Fulano da Silva", "fulano@fulanomail.com", "1");
-        usuario.getControlaveis().addAll(controlaveis);
         usuario.getPerfis().addAll(perfis);
 
         adicionar(usuario);
