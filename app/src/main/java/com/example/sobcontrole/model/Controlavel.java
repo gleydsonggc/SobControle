@@ -5,8 +5,6 @@ import java.util.UUID;
 
 public class Controlavel implements Serializable {
 
-    private static int releCounter = 0;
-
     private String id;
     private String nome;
     private boolean habilitado;
@@ -21,10 +19,14 @@ public class Controlavel implements Serializable {
     }
 
     public Controlavel(String nome, boolean habilitado) {
+        this(nome, habilitado, 0);
+    }
+
+    public Controlavel(String nome, boolean habilitado, int rele) {
         this.id = UUID.randomUUID().toString();
         this.nome = nome != null ? nome : "";
         this.habilitado = habilitado;
-        this.rele = ++releCounter;
+        this.rele = rele;
     }
 
     public String getId() {

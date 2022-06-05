@@ -64,6 +64,9 @@ public class PerfisActivity extends AppCompatActivity {
             case R.id.activity_perfis_menu_item_adicionar:
                 startActivityForResult(new Intent(this, PerfilCadastroActivity.class), 10);
                 return true;
+            case R.id.activity_perfis_menu_item_configurar_pin:
+                startActivityForResult(new Intent(this, PinActivity.class), 20);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }

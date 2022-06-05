@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SobControle">
         <activity
+            android:name=".ui.activities.PinActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activities.PrincipalActivity"
             android:exported="false" />
         <activity
@@ -26,6 +29,9 @@
             android:exported="false" />
         <activity
             android:name=".ui.activities.ContaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.LoginActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activities.CadastroActivity"

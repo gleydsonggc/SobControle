@@ -22,4 +22,10 @@
         android:title="Sair"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/activity_principal_menu_item_sair_do_perfil"
+        android:title="Sair do perfil"
+        android:visible="false"
+        app:showAsAction="never" />
+
 </menu>

@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
@@ -96,13 +97,25 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
     }
 
     public void ativarPerfil(View view) {
+        if (usuarioLogado.getPin() == null) {
+            new AlertDialog.Builder(this)
+                    .setTitle("PIN não configurado")
+                    .setMessage("Antes de ativar um perfil, você deve configurar o PIN.")
+                    .setPositiveButton("Configurar PIN", (dialog, which) -> {
+                        startActivity(new Intent(this, PinActivity.class));
+                    })
+                    .show();
+            return;
+        }
+
         perfil.setNome(etNome.getText().toString());
         perfil.setControlaveisPermitidos(getIdControlaveisSelecionados());
         usuarioLogado.setPerfilAtivo(perfil);
         repository.atualizar(usuarioLogado);
 
-        setResult(Activity.RESULT_OK, new Intent());
-        finish();
+        Intent intent = new Intent(this, PrincipalActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 
     public void desativarPerfil(View view) {
