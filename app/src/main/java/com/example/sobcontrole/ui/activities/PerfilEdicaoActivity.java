@@ -1,5 +1,6 @@
 package com.example.sobcontrole.ui.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -29,6 +31,8 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
     private EditText etNome;
     private ListView listView;
     private Perfil perfil;
+    private Button btAtivar;
+    private Button btDesativar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +42,8 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
 
         etNome = findViewById(R.id.activity_perfil_edicao_et_nome);
         listView = findViewById(R.id.activity_perfil_edicao_lv_controlaveis);
+        btAtivar = findViewById(R.id.activity_perfil_edicao_bt_ativar);
+        btDesativar = findViewById(R.id.activity_perfil_edicao_bt_desativar);
 
         repository = UsuarioRepository.getInstance();
         usuarioLogado = repository.getUsuarioLogado();
@@ -67,25 +73,22 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        btAtivar.setVisibility(isPerfilAtivo(perfil) ? View.GONE : View.VISIBLE);
+        btDesativar.setVisibility(isPerfilAtivo(perfil) ? View.VISIBLE : View.GONE);
+    }
+
+    private boolean isPerfilAtivo(Perfil perfil) {
+        return usuarioLogado != null
+                && usuarioLogado.getPerfilAtivo() != null
+                && usuarioLogado.getPerfilAtivo().getId().equals(perfil.getId());
+    }
+
     public void salvarPerfil(View view) {
-        SparseBooleanArray sparseBooleanArray = listView.getCheckedItemPositions();
-        List<Controlavel> controlaveisSelecionados = new ArrayList<>();
-
-        for (int i = 0; i < listView.getAdapter().getCount(); i++) {
-            boolean checkboxSelecionado = sparseBooleanArray.get(i);
-            if (checkboxSelecionado) {
-                Controlavel controlavel = (Controlavel) listView.getItemAtPosition(i);
-                controlaveisSelecionados.add(controlavel);
-            }
-        }
-
         perfil.setNome(etNome.getText().toString());
-
-        List<String> idControlaveisSelecionados = controlaveisSelecionados.stream()
-                .map(Controlavel::getId)
-                .collect(Collectors.toList());
-        perfil.setControlaveisPermitidos(idControlaveisSelecionados);
-
+        perfil.setControlaveisPermitidos(getIdControlaveisSelecionados());
         repository.atualizar(usuarioLogado);
 
         setResult(Activity.RESULT_OK, new Intent());
@@ -93,30 +96,39 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
     }
 
     public void ativarPerfil(View view) {
+        perfil.setNome(etNome.getText().toString());
+        perfil.setControlaveisPermitidos(getIdControlaveisSelecionados());
+        usuarioLogado.setPerfilAtivo(perfil);
+        repository.atualizar(usuarioLogado);
+
+        setResult(Activity.RESULT_OK, new Intent());
+        finish();
+    }
+
+    public void desativarPerfil(View view) {
+        perfil.setNome(etNome.getText().toString());
+        perfil.setControlaveisPermitidos(getIdControlaveisSelecionados());
+        usuarioLogado.setPerfilAtivo(null);
+        repository.atualizar(usuarioLogado);
+
+        setResult(Activity.RESULT_OK, new Intent());
+        finish();
+    }
+
+    @NonNull
+    private List<String> getIdControlaveisSelecionados() {
+        List<String> idControlaveisSelecionados = new ArrayList<>();
         SparseBooleanArray sparseBooleanArray = listView.getCheckedItemPositions();
-        List<Controlavel> controlaveisSelecionados = new ArrayList<>();
 
         for (int i = 0; i < listView.getAdapter().getCount(); i++) {
             boolean checkboxSelecionado = sparseBooleanArray.get(i);
             if (checkboxSelecionado) {
                 Controlavel controlavel = (Controlavel) listView.getItemAtPosition(i);
-                controlaveisSelecionados.add(controlavel);
+                idControlaveisSelecionados.add(controlavel.getId());
             }
         }
 
-        perfil.setNome(etNome.getText().toString());
-
-        List<String> idControlaveisSelecionados = controlaveisSelecionados.stream()
-                .map(Controlavel::getId)
-                .collect(Collectors.toList());
-        perfil.setControlaveisPermitidos(idControlaveisSelecionados);
-
-        usuarioLogado.setPerfilAtivo(perfil);
-
-        repository.atualizar(usuarioLogado);
-
-        setResult(Activity.RESULT_OK, new Intent());
-        finish();
+        return idControlaveisSelecionados;
     }
 
 }

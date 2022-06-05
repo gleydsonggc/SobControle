@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sobcontrole.R;
 import com.example.sobcontrole.model.Perfil;
+import com.example.sobcontrole.model.Usuario;
 import com.example.sobcontrole.repository.UsuarioRepository;
 import com.example.sobcontrole.ui.activities.PerfilEdicaoActivity;
 
@@ -24,6 +25,8 @@ public class PerfilRecyclerViewAdapter extends RecyclerView.Adapter<PerfilRecycl
 
     private List<Perfil> perfis;
     private Context parentContext;
+    private UsuarioRepository repository;
+    private Usuario usuarioLogado;
 
     public PerfilRecyclerViewAdapter(List<Perfil> perfis) {
         this.perfis = perfis;
@@ -33,6 +36,9 @@ public class PerfilRecyclerViewAdapter extends RecyclerView.Adapter<PerfilRecycl
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         parentContext = parent.getContext();
+        repository = UsuarioRepository.getInstance();
+        usuarioLogado = repository.getUsuarioLogado();
+
         View view = LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.item_perfil, parent, false);
@@ -73,10 +79,19 @@ public class PerfilRecyclerViewAdapter extends RecyclerView.Adapter<PerfilRecycl
         }
 
         private void deletarPerfil() {
-            UsuarioRepository.getInstance().getUsuarioLogado().getPerfis().remove(perfil);
-            UsuarioRepository.getInstance().atualizar(UsuarioRepository.getInstance().getUsuarioLogado());
-            setPerfis(UsuarioRepository.getInstance().getUsuarioLogado().getPerfis());
+            if (isPerfilAtivo(perfil)) {
+                usuarioLogado.setPerfilAtivo(null);
+            }
+            usuarioLogado.getPerfis().remove(perfil);
+            repository.atualizar(usuarioLogado);
+            setPerfis(usuarioLogado.getPerfis());
             notifyDataSetChanged();
+        }
+
+        private boolean isPerfilAtivo(Perfil perfil) {
+            return usuarioLogado != null
+                    && usuarioLogado.getPerfilAtivo() != null
+                    && usuarioLogado.getPerfilAtivo().getId().equals(perfil.getId());
         }
 
         @Override
@@ -88,7 +103,7 @@ public class PerfilRecyclerViewAdapter extends RecyclerView.Adapter<PerfilRecycl
 
         public void bind(Perfil perfil) {
             this.perfil = perfil;
-            textView.setText(perfil.getNome() + " " + perfil.getId().substring(0, 4));
+            textView.setText(perfil.getNome() + (isPerfilAtivo(perfil) ? " (Ativo)" : ""));
         }
     }
 }
