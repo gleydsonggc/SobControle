@@ -20,10 +20,15 @@ import com.example.sobcontrole.model.Controlavel;
 import com.example.sobcontrole.model.Usuario;
 import com.example.sobcontrole.repository.UsuarioRepository;
 import com.example.sobcontrole.ui.adapters.ControlavelCardRecyclerViewAdapter;
+import com.example.sobcontrole.util.RetrofitUtil;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class PrincipalActivity extends AppCompatActivity {
 
