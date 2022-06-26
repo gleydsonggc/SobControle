@@ -11,19 +11,10 @@ public class Controlavel implements Serializable {
     private int rele;
 
     public Controlavel() {
-        this("");
     }
 
-    public Controlavel(String nome) {
-        this(nome, false);
-    }
-
-    public Controlavel(String nome, boolean habilitado) {
-        this(nome, habilitado, 0);
-    }
-
-    public Controlavel(String nome, boolean habilitado, int rele) {
-        this.id = UUID.randomUUID().toString();
+    public Controlavel(String id, String nome, boolean habilitado, int rele) {
+        this.id = id;
         this.nome = nome != null ? nome : "";
         this.habilitado = habilitado;
         this.rele = rele;
@@ -55,6 +46,11 @@ public class Controlavel implements Serializable {
 
     @Override
     public String toString() {
-        return nome;
+        return "Controlavel{" +
+                "id='" + id + '\'' +
+                ", nome='" + nome + '\'' +
+                ", habilitado=" + habilitado +
+                ", rele=" + rele +
+                '}';
     }
 }

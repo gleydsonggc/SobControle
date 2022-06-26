@@ -45,4 +45,12 @@ public class Perfil implements Serializable {
         return controlaveisPermitidos.contains(controlavelId);
     }
 
+    @Override
+    public String toString() {
+        return "Perfil{" +
+                "id='" + id + '\'' +
+                ", nome='" + nome + '\'' +
+                ", controlaveisPermitidos=" + controlaveisPermitidos +
+                '}';
+    }
 }

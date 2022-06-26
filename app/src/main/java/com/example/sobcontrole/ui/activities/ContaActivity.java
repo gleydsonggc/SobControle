@@ -32,7 +32,7 @@ public class ContaActivity extends AppCompatActivity {
 
         etNome.setText(usuarioLogado.getNome());
         etEmail.setText(usuarioLogado.getEmail());
-        etSenha.setText(usuarioLogado.getSenha());
+//        etSenha.setText(usuarioLogado.getSenha());
     }
 
     public void salvarConta(View view) {
@@ -42,7 +42,7 @@ public class ContaActivity extends AppCompatActivity {
 
         usuarioLogado.setNome(novoNome);
         usuarioLogado.setEmail(novoEmail);
-        usuarioLogado.setSenha(novaSenha);
+//        usuarioLogado.setSenha(novaSenha);
 
         repository.atualizar(usuarioLogado);
         finish();

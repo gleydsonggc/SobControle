@@ -2,8 +2,6 @@ package com.example.sobcontrole.ui.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -16,22 +14,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.sobcontrole.R;
-import com.example.sobcontrole.model.Controlavel;
 import com.example.sobcontrole.model.Usuario;
-import com.example.sobcontrole.repository.UsuarioRepository;
-import com.example.sobcontrole.ui.adapters.ControlavelCardRecyclerViewAdapter;
 import com.example.sobcontrole.ui.listeners.FirebaseAuthListener;
-import com.example.sobcontrole.util.RetrofitUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class PrincipalActivity extends AppCompatActivity {
 
@@ -46,6 +37,10 @@ public class PrincipalActivity extends AppCompatActivity {
     private MenuItem menuSairPerfil;
     private FirebaseAuth fbAuth;
     private FirebaseAuthListener authListener;
+    private DatabaseReference rdbUsuario;
+    private FirebaseUser fbUsuario;
+    private FirebaseDatabase rdb;
+    private Usuario usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +59,24 @@ public class PrincipalActivity extends AppCompatActivity {
 //        int qtdColunas = 2;
 //        recyclerView.setLayoutManager(new GridLayoutManager(this, qtdColunas));
 //        recyclerView.setAdapter(adapter);
+
+        rdb = FirebaseDatabase.getInstance();
+        fbUsuario = fbAuth.getCurrentUser();
+        rdbUsuario = rdb.getReference("usuarios/" + fbUsuario.getUid());
+
+        rdbUsuario.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Usuario tempUsuario = dataSnapshot.getValue(Usuario.class);
+                if (tempUsuario != null) {
+                    tempUsuario.setId(dataSnapshot.getKey());
+                    PrincipalActivity.this.usuario = tempUsuario;
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {  }
+        });
     }
 
     @Override

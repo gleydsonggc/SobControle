@@ -11,7 +11,6 @@ public class Usuario implements Serializable {
     private String id;
     private String nome;
     private String email;
-    private String senha;
     private List<Controlavel> controlaveis = Arrays.asList(new Controlavel[8]);
     private List<Perfil> perfis;
     private Perfil perfilAtivo;
@@ -24,7 +23,7 @@ public class Usuario implements Serializable {
 
     private void inicializarControlaveis() {
         for (int i = 0; i < controlaveis.size(); i++) {
-            controlaveis.set(i, new Controlavel("", false, i + 1));
+            controlaveis.set(i, new Controlavel(String.valueOf(i + 1), "", false, i + 1));
         }
     }
 
@@ -32,7 +31,6 @@ public class Usuario implements Serializable {
         inicializarControlaveis();
         this.nome = nome;
         this.email = email;
-        this.senha = senha;
         this.perfis = new ArrayList<>();
     }
 
@@ -58,14 +56,6 @@ public class Usuario implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
     }
 
     public List<Controlavel> getControlaveis() {
@@ -107,5 +97,18 @@ public class Usuario implements Serializable {
         }
         if (tempPin < 0) return false;
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id='" + id + '\'' +
+                ", nome='" + nome + '\'' +
+                ", email='" + email + '\'' +
+                ", controlaveis=" + controlaveis +
+                ", perfis=" + perfis +
+                ", perfilAtivo=" + perfilAtivo +
+                ", pin=" + pin +
+                '}';
     }
 }

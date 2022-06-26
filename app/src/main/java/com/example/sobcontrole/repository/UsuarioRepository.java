@@ -83,7 +83,6 @@ public final class UsuarioRepository {
     public Usuario buscarPorEmailESenha(String email, String senha) {
         return UsuarioRepository.getInstance().listar().stream()
                 .filter(usuario -> usuario.getEmail().equalsIgnoreCase(email))
-                .filter(usuario -> usuario.getSenha().equalsIgnoreCase(senha))
                 .findFirst()
                 .orElse(null);
     }
@@ -91,7 +90,6 @@ public final class UsuarioRepository {
     public boolean logarComEmailESenha(String email, String senha) {
         Usuario usuarioEncontrado = UsuarioRepository.getInstance().listar().stream()
                 .filter(u -> u.getEmail().equalsIgnoreCase(email))
-                .filter(u -> u.getSenha().equalsIgnoreCase(senha))
                 .findFirst()
                 .orElse(null);
         usuarioLogado = usuarioEncontrado;
@@ -101,7 +99,6 @@ public final class UsuarioRepository {
     public boolean logarComUsuario(Usuario usuario) {
         Usuario usuarioEncontrado = UsuarioRepository.getInstance().listar().stream()
                 .filter(u -> u.getEmail().equalsIgnoreCase(usuario.getEmail()))
-                .filter(u -> u.getSenha().equalsIgnoreCase(usuario.getSenha()))
                 .findFirst()
                 .orElse(null);
         usuarioLogado = usuarioEncontrado;
