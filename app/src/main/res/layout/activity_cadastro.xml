@@ -18,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Nome"
+            android:text="usuario1"
             android:inputType="textPersonName" />
 
         <EditText
@@ -26,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:hint="E-mail"
+            android:text="usuario1@pdm20221.com"
             android:inputType="textEmailAddress" />
 
         <EditText

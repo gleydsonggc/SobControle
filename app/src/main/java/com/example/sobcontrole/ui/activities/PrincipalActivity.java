@@ -20,7 +20,10 @@ import com.example.sobcontrole.model.Controlavel;
 import com.example.sobcontrole.model.Usuario;
 import com.example.sobcontrole.repository.UsuarioRepository;
 import com.example.sobcontrole.ui.adapters.ControlavelCardRecyclerViewAdapter;
+import com.example.sobcontrole.ui.listeners.FirebaseAuthListener;
 import com.example.sobcontrole.util.RetrofitUtil;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Comparator;
 import java.util.List;
@@ -32,15 +35,17 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class PrincipalActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
-    private ControlavelCardRecyclerViewAdapter adapter;
-    private UsuarioRepository repository;
-    private Usuario usuarioLogado;
+//    private RecyclerView recyclerView;
+//    private ControlavelCardRecyclerViewAdapter adapter;
+//    private UsuarioRepository repository;
+//    private Usuario usuarioLogado;
     private MenuItem menuMinhaConta;
     private MenuItem menuControlaveis;
     private MenuItem menuPerfis;
     private MenuItem menuSair;
     private MenuItem menuSairPerfil;
+    private FirebaseAuth fbAuth;
+    private FirebaseAuthListener authListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,14 +53,17 @@ public class PrincipalActivity extends AppCompatActivity {
         setContentView(R.layout.activity_principal);
         setTitle("Sob Controle");
 
-        repository = UsuarioRepository.getInstance();
-        usuarioLogado = repository.getUsuarioLogado();
-        recyclerView = findViewById(R.id.activity_principal_recyclerview);
-        adapter = new ControlavelCardRecyclerViewAdapter(usuarioLogado.getControlaveis());
+        fbAuth = FirebaseAuth.getInstance();
+        authListener = new FirebaseAuthListener(this);
 
-        int qtdColunas = 2;
-        recyclerView.setLayoutManager(new GridLayoutManager(this, qtdColunas));
-        recyclerView.setAdapter(adapter);
+//        repository = UsuarioRepository.getInstance();
+//        usuarioLogado = repository.getUsuarioLogado();
+//        recyclerView = findViewById(R.id.activity_principal_recyclerview);
+//        adapter = new ControlavelCardRecyclerViewAdapter(usuarioLogado.getControlaveis());
+//
+//        int qtdColunas = 2;
+//        recyclerView.setLayoutManager(new GridLayoutManager(this, qtdColunas));
+//        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -67,19 +75,19 @@ public class PrincipalActivity extends AppCompatActivity {
         menuSair = menu.findItem(R.id.activity_principal_menu_item_sair);
         menuSairPerfil = menu.findItem(R.id.activity_principal_menu_item_sair_do_perfil);
 
-        if (usuarioLogado.getPerfilAtivo() != null) {
-            menuMinhaConta.setVisible(false);
-            menuControlaveis.setVisible(false);
-            menuPerfis.setVisible(false);
-            menuSair.setVisible(false);
-            menuSairPerfil.setVisible(true);
-        } else {
-            menuMinhaConta.setVisible(true);
-            menuControlaveis.setVisible(true);
-            menuPerfis.setVisible(true);
-            menuSair.setVisible(true);
-            menuSairPerfil.setVisible(false);
-        }
+//        if (usuarioLogado.getPerfilAtivo() != null) {
+//            menuMinhaConta.setVisible(false);
+//            menuControlaveis.setVisible(false);
+//            menuPerfis.setVisible(false);
+//            menuSair.setVisible(false);
+//            menuSairPerfil.setVisible(true);
+//        } else {
+//            menuMinhaConta.setVisible(true);
+//            menuControlaveis.setVisible(true);
+//            menuPerfis.setVisible(true);
+//            menuSair.setVisible(true);
+//            menuSairPerfil.setVisible(false);
+//        }
         return true;
     }
 
@@ -96,10 +104,13 @@ public class PrincipalActivity extends AppCompatActivity {
                 startActivity(new Intent(this, PerfisActivity.class));
                 return true;
             case R.id.activity_principal_menu_item_sair:
-                repository.logout();
-                Intent intent = new Intent(this, InicialActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                FirebaseUser user = mAuth.getCurrentUser();
+                if (user != null) {
+                    mAuth.signOut();
+                } else {
+                    Toast.makeText(PrincipalActivity.this, "Erro!", Toast.LENGTH_SHORT).show();
+                }
                 return true;
             case R.id.activity_principal_menu_item_sair_do_perfil:
                 EditText etPin = new EditText(this);
@@ -111,12 +122,12 @@ public class PrincipalActivity extends AppCompatActivity {
                         .setView(etPin)
                         .setPositiveButton("OK", (dialog, which) -> {
                             String pinDigitado = etPin.getText().toString();
-                            if (!pinDigitado.equals(usuarioLogado.getPin().toString())) {
-                                Toast.makeText(this, "PIN incorreto.", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-                            usuarioLogado.setPerfilAtivo(null);
-                            repository.atualizar(usuarioLogado);
+//                            if (!pinDigitado.equals(usuarioLogado.getPin().toString())) {
+//                                Toast.makeText(this, "PIN incorreto.", Toast.LENGTH_SHORT).show();
+//                                return;
+//                            }
+//                            usuarioLogado.setPerfilAtivo(null);
+//                            repository.atualizar(usuarioLogado);
                             recreate();
                         })
                         .show();
@@ -127,9 +138,21 @@ public class PrincipalActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        fbAuth.addAuthStateListener(authListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        fbAuth.removeAuthStateListener(authListener);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
-        adapter.setControlaveis(usuarioLogado.getControlaveis());
-        adapter.notifyDataSetChanged();
+//        adapter.setControlaveis(usuarioLogado.getControlaveis());
+//        adapter.notifyDataSetChanged();
     }
 }
