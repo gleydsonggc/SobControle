@@ -13,11 +13,9 @@ import com.example.sobcontrole.R;
 import com.example.sobcontrole.model.Controlavel;
 import com.example.sobcontrole.model.Usuario;
 import com.example.sobcontrole.repository.UsuarioRepository;
+import com.example.sobcontrole.util.FirebaseUtil;
 
 public class ControlaveisActivity extends AppCompatActivity {
-
-    private UsuarioRepository repository;
-    private Usuario usuarioLogado;
 
     private EditText[] etControlavel;
     private CheckBox[] cbControlavel;
@@ -27,9 +25,6 @@ public class ControlaveisActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_controlaveis);
         setTitle("Controláveis");
-
-        repository = UsuarioRepository.getInstance();
-        usuarioLogado = repository.getUsuarioLogado();
 
         etControlavel = new EditText[]{
                 findViewById(R.id.etControlavel1),
@@ -54,8 +49,8 @@ public class ControlaveisActivity extends AppCompatActivity {
         };
 
         for (int i = 0; i < etControlavel.length; i++) {
-            cbControlavel[i].setChecked(usuarioLogado.getControlaveis().get(i).isHabilitado());
-            etControlavel[i].setText(usuarioLogado.getControlaveis().get(i).getNome());
+            cbControlavel[i].setChecked(FirebaseUtil.usuario.getControlaveis().get(i).isHabilitado());
+            etControlavel[i].setText(FirebaseUtil.usuario.getControlaveis().get(i).getNome());
         }
     }
 
@@ -81,14 +76,14 @@ public class ControlaveisActivity extends AppCompatActivity {
             String nome = etControlavel[i].getText().toString().trim();
             cbControlavel[i].setChecked(cbControlavel[i].isChecked() && !nome.isEmpty());
             boolean checkBoxHabilitado = cbControlavel[i].isChecked();
-            Controlavel controlavel = usuarioLogado.getControlaveis().get(i);
+            Controlavel controlavel = FirebaseUtil.usuario.getControlaveis().get(i);
             controlavel.setNome(nome);
             controlavel.setHabilitado(checkBoxHabilitado);
             if (!checkBoxHabilitado) {
-                usuarioLogado.getPerfis().forEach(p -> p.getControlaveisPermitidos().remove(controlavel.getId()));
+                FirebaseUtil.usuario.getPerfis().forEach(p -> p.getControlaveisPermitidos().remove(controlavel.getId()));
             }
         }
-        repository.atualizar(usuarioLogado);
+        FirebaseUtil.salvarUsuario();
         finish();
     }
 

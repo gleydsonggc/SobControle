@@ -12,8 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sobcontrole.R;
 import com.example.sobcontrole.model.Controlavel;
-import com.example.sobcontrole.model.Usuario;
-import com.example.sobcontrole.repository.UsuarioRepository;
+import com.example.sobcontrole.util.FirebaseUtil;
 import com.example.sobcontrole.util.RetrofitUtil;
 
 import java.util.List;
@@ -29,7 +28,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 public class ControlavelCardRecyclerViewAdapter extends RecyclerView.Adapter<ControlavelCardRecyclerViewAdapter.ViewHolder> {
 
     private List<Controlavel> controlaveis;
-    private RetrofitUtil service;
+    private RetrofitUtil retrofitUtil;
 
     public ControlavelCardRecyclerViewAdapter(List<Controlavel> controlaveis) {
         this.controlaveis = controlaveis;
@@ -44,7 +43,7 @@ public class ControlavelCardRecyclerViewAdapter extends RecyclerView.Adapter<Con
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        service = retrofit.create(RetrofitUtil.class);
+        retrofitUtil = retrofit.create(RetrofitUtil.class);
     }
 
     @NonNull
@@ -73,17 +72,15 @@ public class ControlavelCardRecyclerViewAdapter extends RecyclerView.Adapter<Con
     }
 
     private void filtrarControlaveisDeAcordoComPerfilAtivo() {
-        Usuario usuarioLogado = UsuarioRepository.getInstance().getUsuarioLogado();
-        if (usuarioLogado.getPerfilAtivo() == null) {
+        if (FirebaseUtil.usuario.getPerfilAtivo() == null) {
             return;
         }
         this.controlaveis = controlaveis.stream()
-                .filter(c -> usuarioLogado.getPerfilAtivo().podeAcessarControlavel(c.getId()))
+                .filter(c -> FirebaseUtil.usuario.getPerfilAtivo().podeAcessarControlavel(c.getId()))
                 .collect(Collectors.toList());
     }
 
     private void filtrarControlaveisDeAcordoComHabilitado() {
-        Usuario usuarioLogado = UsuarioRepository.getInstance().getUsuarioLogado();
         this.controlaveis = controlaveis.stream()
                 .filter(Controlavel::isHabilitado)
                 .collect(Collectors.toList());
@@ -102,7 +99,7 @@ public class ControlavelCardRecyclerViewAdapter extends RecyclerView.Adapter<Con
 
         @Override
         public void onClick(View v) {
-            Call<String> call = service.enviarComando("1", "on");
+            Call<String> call = retrofitUtil.enviarComando("1", "on");
             call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
