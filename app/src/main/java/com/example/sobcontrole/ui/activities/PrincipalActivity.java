@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.sobcontrole.R;
 import com.example.sobcontrole.model.Usuario;
 import com.example.sobcontrole.ui.listeners.FirebaseAuthListener;
+import com.example.sobcontrole.util.FirebaseUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -71,6 +72,7 @@ public class PrincipalActivity extends AppCompatActivity {
                 if (tempUsuario != null) {
                     tempUsuario.setId(dataSnapshot.getKey());
                     PrincipalActivity.this.usuario = tempUsuario;
+                    FirebaseUtil.usuario = tempUsuario;
                 }
             }
 
