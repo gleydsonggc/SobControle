@@ -13,10 +13,10 @@
         tools:context=".ui.activities.PrincipalActivity">
 
         <TextView
-            android:id="@+id/activity_principal_tv_controlaveis"
+            android:id="@+id/activity_principal_tv_dispositivos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Controláveis"
+            android:text="Dispositivos"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="#ACAEAF"
             android:textStyle="bold" />

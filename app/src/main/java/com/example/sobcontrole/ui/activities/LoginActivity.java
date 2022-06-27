@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.example.sobcontrole.R;
 import com.example.sobcontrole.model.Usuario;
 import com.example.sobcontrole.ui.listeners.FirebaseAuthListener;
+import com.example.sobcontrole.util.FirebaseUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -22,7 +23,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText etEmail;
     private EditText etSenha;
-    private FirebaseAuth fbAuth;
     private FirebaseAuthListener authListener;
 
     @Override
@@ -34,7 +34,6 @@ public class LoginActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.activity_login_et_email);
         etSenha = findViewById(R.id.activity_login_et_senha);
 
-        fbAuth = FirebaseAuth.getInstance();
         authListener = new FirebaseAuthListener(this);
     }
 
@@ -42,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         String email = etEmail.getText().toString();
         String senha = etSenha.getText().toString();
 
-        fbAuth.signInWithEmailAndPassword(email, senha)
+        FirebaseUtil.getFbAuth().signInWithEmailAndPassword(email, senha)
                 .addOnCompleteListener(this, task -> {
                     String msg = task.isSuccessful() ? "Login realizado com sucesso.": "Falha ao tentar o login.";
                     Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
@@ -52,12 +51,12 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        fbAuth.addAuthStateListener(authListener);
+        FirebaseUtil.getFbAuth().addAuthStateListener(authListener);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        fbAuth.removeAuthStateListener(authListener);
+        FirebaseUtil.getFbAuth().removeAuthStateListener(authListener);
     }
 }

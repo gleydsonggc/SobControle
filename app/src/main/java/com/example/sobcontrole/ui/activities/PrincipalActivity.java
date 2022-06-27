@@ -17,23 +17,21 @@ import android.widget.Toast;
 
 import com.example.sobcontrole.R;
 import com.example.sobcontrole.model.Usuario;
-import com.example.sobcontrole.ui.adapters.ControlavelCardRecyclerViewAdapter;
+import com.example.sobcontrole.ui.adapters.DispositivoCardRecyclerViewAdapter;
 import com.example.sobcontrole.ui.listeners.FirebaseAuthListener;
 import com.example.sobcontrole.util.FirebaseUtil;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class PrincipalActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private ControlavelCardRecyclerViewAdapter adapter;
+    private DispositivoCardRecyclerViewAdapter adapter;
     private MenuItem menuMinhaConta;
-    private MenuItem menuControlaveis;
+    private MenuItem menuDispositivos;
     private MenuItem menuPerfis;
     private MenuItem menuSair;
     private MenuItem menuSairPerfil;
@@ -56,7 +54,7 @@ public class PrincipalActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_principal, menu);
         menuMinhaConta = menu.findItem(R.id.activity_principal_menu_item_minhaconta);
-        menuControlaveis = menu.findItem(R.id.activity_principal_menu_item_controlaveis);
+        menuDispositivos = menu.findItem(R.id.activity_principal_menu_item_dispositivos);
         menuPerfis = menu.findItem(R.id.activity_principal_menu_item_perfis);
         menuSair = menu.findItem(R.id.activity_principal_menu_item_sair);
         menuSairPerfil = menu.findItem(R.id.activity_principal_menu_item_sair_do_perfil);
@@ -72,7 +70,7 @@ public class PrincipalActivity extends AppCompatActivity {
                 if (tempUsuario != null) {
                     tempUsuario.setId(dataSnapshot.getKey());
                     FirebaseUtil.usuario = tempUsuario;
-                    adapter = new ControlavelCardRecyclerViewAdapter(FirebaseUtil.usuario.getControlaveis());
+                    adapter = new DispositivoCardRecyclerViewAdapter(FirebaseUtil.usuario.getDispositivos());
                     recyclerView.setAdapter(adapter);
                     configurarMenu();
                 }
@@ -88,13 +86,13 @@ public class PrincipalActivity extends AppCompatActivity {
     private void configurarMenu() {
         if (FirebaseUtil.usuario.getPerfilAtivo() != null) {
             menuMinhaConta.setVisible(false);
-            menuControlaveis.setVisible(false);
+            menuDispositivos.setVisible(false);
             menuPerfis.setVisible(false);
             menuSair.setVisible(false);
             menuSairPerfil.setVisible(true);
         } else {
             menuMinhaConta.setVisible(true);
-            menuControlaveis.setVisible(true);
+            menuDispositivos.setVisible(true);
             menuPerfis.setVisible(true);
             menuSair.setVisible(true);
             menuSairPerfil.setVisible(false);
@@ -107,8 +105,8 @@ public class PrincipalActivity extends AppCompatActivity {
             case R.id.activity_principal_menu_item_minhaconta:
                 startActivity(new Intent(this, ContaActivity.class));
                 return true;
-            case R.id.activity_principal_menu_item_controlaveis:
-                startActivity(new Intent(this, ControlaveisActivity.class));
+            case R.id.activity_principal_menu_item_dispositivos:
+                startActivity(new Intent(this, DispositivosActivity.class));
                 return true;
             case R.id.activity_principal_menu_item_perfis:
                 startActivity(new Intent(this, PerfisActivity.class));

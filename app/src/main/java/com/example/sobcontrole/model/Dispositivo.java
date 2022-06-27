@@ -3,17 +3,17 @@ package com.example.sobcontrole.model;
 import java.io.Serializable;
 import java.util.UUID;
 
-public class Controlavel implements Serializable {
+public class Dispositivo implements Serializable {
 
     private String id;
     private String nome;
     private boolean habilitado;
     private int rele;
 
-    public Controlavel() {
+    public Dispositivo() {
     }
 
-    public Controlavel(String id, String nome, boolean habilitado, int rele) {
+    public Dispositivo(String id, String nome, boolean habilitado, int rele) {
         this.id = id;
         this.nome = nome != null ? nome : "";
         this.habilitado = habilitado;
@@ -46,7 +46,7 @@ public class Controlavel implements Serializable {
 
     @Override
     public String toString() {
-        return "Controlavel{" +
+        return "Dispositivo{" +
                 "id='" + id + '\'' +
                 ", nome='" + nome + '\'' +
                 ", habilitado=" + habilitado +

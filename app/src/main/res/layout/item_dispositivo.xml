@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/item_controlavel"
+    android:id="@+id/item_dispositivo"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/item_controlavel_tv_nome"
+        android:id="@+id/item_dispositivo_tv_nome"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -17,7 +17,7 @@
         tools:text="1. Quarto" />
 
     <ImageView
-        android:id="@+id/item_controlavel_iv_lixeira"
+        android:id="@+id/item_dispositivo_iv_lixeira"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"

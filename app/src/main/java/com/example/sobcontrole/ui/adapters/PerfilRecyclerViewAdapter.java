@@ -68,8 +68,8 @@ public class PerfilRecyclerViewAdapter extends RecyclerView.Adapter<PerfilRecycl
             itemView.setOnClickListener(this);
 
             imageView.setOnClickListener(v -> {
-                Toast.makeText(itemView.getContext(), "Lixeira", Toast.LENGTH_SHORT).show();
                 deletarPerfil();
+                Toast.makeText(itemView.getContext(), "Perfil deletado.", Toast.LENGTH_SHORT).show();
             });
         }
 

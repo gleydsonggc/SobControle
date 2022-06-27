@@ -30,7 +30,7 @@
             android:name=".ui.activities.PerfilCadastroActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activities.ControlaveisActivity"
+            android:name=".ui.activities.DispositivosActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activities.ContaActivity"

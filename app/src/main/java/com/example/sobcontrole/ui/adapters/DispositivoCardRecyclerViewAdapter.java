@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sobcontrole.R;
-import com.example.sobcontrole.model.Controlavel;
+import com.example.sobcontrole.model.Dispositivo;
 import com.example.sobcontrole.util.FirebaseUtil;
 import com.example.sobcontrole.util.RetrofitUtil;
 
@@ -25,16 +25,16 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-public class ControlavelCardRecyclerViewAdapter extends RecyclerView.Adapter<ControlavelCardRecyclerViewAdapter.ViewHolder> {
+public class DispositivoCardRecyclerViewAdapter extends RecyclerView.Adapter<DispositivoCardRecyclerViewAdapter.ViewHolder> {
 
-    private List<Controlavel> controlaveis;
+    private List<Dispositivo> dispositivos;
     private RetrofitUtil retrofitUtil;
 
-    public ControlavelCardRecyclerViewAdapter(List<Controlavel> controlaveis) {
-        this.controlaveis = controlaveis;
+    public DispositivoCardRecyclerViewAdapter(List<Dispositivo> dispositivos) {
+        this.dispositivos = dispositivos;
         initRetrofit();
-        filtrarControlaveisDeAcordoComHabilitado();
-        filtrarControlaveisDeAcordoComPerfilAtivo();
+        filtrarDispositivosDeAcordoComHabilitado();
+        filtrarDispositivosDeAcordoComPerfilAtivo();
     }
 
     private void initRetrofit() {
@@ -51,49 +51,49 @@ public class ControlavelCardRecyclerViewAdapter extends RecyclerView.Adapter<Con
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater
                 .from(parent.getContext())
-                .inflate(R.layout.item_controlavel_card, parent, false);
+                .inflate(R.layout.item_dispositivo_card, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(controlaveis.get(position));
+        holder.bind(dispositivos.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return controlaveis.size();
+        return dispositivos.size();
     }
 
-    public void setControlaveis(List<Controlavel> controlaveis) {
-        this.controlaveis = controlaveis;
-        filtrarControlaveisDeAcordoComHabilitado();
-        filtrarControlaveisDeAcordoComPerfilAtivo();
+    public void setDispositivos(List<Dispositivo> dispositivos) {
+        this.dispositivos = dispositivos;
+        filtrarDispositivosDeAcordoComHabilitado();
+        filtrarDispositivosDeAcordoComPerfilAtivo();
     }
 
-    private void filtrarControlaveisDeAcordoComPerfilAtivo() {
+    private void filtrarDispositivosDeAcordoComPerfilAtivo() {
         if (FirebaseUtil.usuario.getPerfilAtivo() == null) {
             return;
         }
-        this.controlaveis = controlaveis.stream()
-                .filter(c -> FirebaseUtil.usuario.getPerfilAtivo().podeAcessarControlavel(c.getId()))
+        this.dispositivos = dispositivos.stream()
+                .filter(c -> FirebaseUtil.usuario.getPerfilAtivo().podeAcessarDispositivo(c.getId()))
                 .collect(Collectors.toList());
     }
 
-    private void filtrarControlaveisDeAcordoComHabilitado() {
-        this.controlaveis = controlaveis.stream()
-                .filter(Controlavel::isHabilitado)
+    private void filtrarDispositivosDeAcordoComHabilitado() {
+        this.dispositivos = dispositivos.stream()
+                .filter(Dispositivo::isHabilitado)
                 .collect(Collectors.toList());
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView textView;
-        private Controlavel controlavel;
+        private Dispositivo dispositivo;
         private View itemView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.item_controlavel_card_tv);
+            textView = itemView.findViewById(R.id.item_dispositivo_card_tv);
             itemView.setOnClickListener(this);
         }
 
@@ -114,10 +114,10 @@ public class ControlavelCardRecyclerViewAdapter extends RecyclerView.Adapter<Con
             });
         }
 
-        public void bind(Controlavel controlavel) {
-            this.controlavel = controlavel;
-//            this.itemView.setVisibility(controlavel.isHabilitado() ? View.VISIBLE : View.GONE);
-            textView.setText(controlavel.getNome());
+        public void bind(Dispositivo dispositivo) {
+            this.dispositivo = dispositivo;
+//            this.itemView.setVisibility(dispositivo.isHabilitado() ? View.VISIBLE : View.GONE);
+            textView.setText(dispositivo.getNome());
         }
     }
 

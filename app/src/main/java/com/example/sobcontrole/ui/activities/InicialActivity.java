@@ -8,11 +8,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sobcontrole.R;
 import com.example.sobcontrole.ui.listeners.FirebaseAuthListener;
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.sobcontrole.util.FirebaseUtil;
 
 public class InicialActivity extends AppCompatActivity {
 
-    private FirebaseAuth fbAuth;
     private FirebaseAuthListener authListener;
 
     @Override
@@ -21,22 +20,19 @@ public class InicialActivity extends AppCompatActivity {
         setContentView(R.layout.activity_inicial);
         getSupportActionBar().hide();
 
-        fbAuth = FirebaseAuth.getInstance();
         authListener = new FirebaseAuthListener(this);
-
-
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        fbAuth.addAuthStateListener(authListener);
+        FirebaseUtil.getFbAuth().addAuthStateListener(authListener);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        fbAuth.removeAuthStateListener(authListener);
+        FirebaseUtil.getFbAuth().removeAuthStateListener(authListener);
     }
 
     public void entrar(View view) {

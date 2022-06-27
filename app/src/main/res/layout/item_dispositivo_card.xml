@@ -18,7 +18,7 @@
         android:padding="8dp">
 
         <ImageView
-            android:id="@+id/item_controlavel_card_iv"
+            android:id="@+id/item_dispositivo_card_iv"
             android:layout_width="33dp"
             android:layout_height="47dp"
             android:layout_gravity="center"
@@ -27,11 +27,11 @@
             app:tint="#FFC107" />
 
         <TextView
-            android:id="@+id/item_controlavel_card_tv"
+            android:id="@+id/item_dispositivo_card_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Controlável"
+            android:text="Dispositivo"
             android:textStyle="bold" />
     </LinearLayout>
 

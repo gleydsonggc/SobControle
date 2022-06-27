@@ -8,8 +8,8 @@
         app:showAsAction="never" />
 
     <item
-        android:id="@+id/activity_principal_menu_item_controlaveis"
-        android:title="Controláveis"
+        android:id="@+id/activity_principal_menu_item_dispositivos"
+        android:title="Dispositivos"
         app:showAsAction="never" />
 
     <item

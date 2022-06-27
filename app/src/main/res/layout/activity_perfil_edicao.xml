@@ -30,16 +30,16 @@
             android:inputType="text" />
 
         <TextView
-            android:id="@+id/activity_perfil_edicao_tv_selecione_controlaveis"
+            android:id="@+id/activity_perfil_edicao_tv_selecione_dispositivos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Selecione para permitir o acesso ao controlável"
+            android:text="Selecione para permitir o acesso ao dispositivo"
             android:textColor="#2196F3"
             android:textStyle="bold" />
 
         <ListView
-            android:id="@+id/activity_perfil_edicao_lv_controlaveis"
+            android:id="@+id/activity_perfil_edicao_lv_dispositivos"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"/>

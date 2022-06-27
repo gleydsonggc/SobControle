@@ -18,7 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sobcontrole.R;
-import com.example.sobcontrole.model.Controlavel;
+import com.example.sobcontrole.model.Dispositivo;
 import com.example.sobcontrole.model.Perfil;
 import com.example.sobcontrole.util.FirebaseUtil;
 
@@ -33,7 +33,7 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
     private Perfil perfil;
     private Button btAtivar;
     private Button btDesativar;
-    private ArrayAdapter<Controlavel> arrayAdapter;
+    private ArrayAdapter<Dispositivo> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
         setTitle("Editar perfil");
 
         etNome = findViewById(R.id.activity_perfil_edicao_et_nome);
-        listView = findViewById(R.id.activity_perfil_edicao_lv_controlaveis);
+        listView = findViewById(R.id.activity_perfil_edicao_lv_dispositivos);
         btAtivar = findViewById(R.id.activity_perfil_edicao_bt_ativar);
         btDesativar = findViewById(R.id.activity_perfil_edicao_bt_desativar);
 
@@ -59,7 +59,7 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
             finish();
         }
 
-        arrayAdapter = new ArrayAdapter<Controlavel>(this, android.R.layout.simple_list_item_checked, FirebaseUtil.usuario.getControlaveis().stream().filter(Controlavel::isHabilitado).collect(Collectors.toList())) {
+        arrayAdapter = new ArrayAdapter<Dispositivo>(this, android.R.layout.simple_list_item_checked, FirebaseUtil.usuario.getDispositivos().stream().filter(Dispositivo::isHabilitado).collect(Collectors.toList())) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 TextView view = (TextView) super.getView(position, convertView, parent);
@@ -72,8 +72,8 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
         for (int position = 0; position < listView.getCount(); position++) {
-            Controlavel controlavel = (Controlavel) listView.getItemAtPosition(position);
-            this.listView.setItemChecked(position, perfil.podeAcessarControlavel(controlavel.getId()));
+            Dispositivo dispositivo = (Dispositivo) listView.getItemAtPosition(position);
+            this.listView.setItemChecked(position, perfil.podeAcessarDispositivo(dispositivo.getId()));
         }
     }
 
@@ -92,7 +92,7 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
 
     public void salvarPerfil(View view) {
         perfil.setNome(etNome.getText().toString());
-        perfil.setControlaveisPermitidos(getIdControlaveisSelecionados());
+        perfil.setDispositivosPermitidos(getIdDispositivosSelecionados());
         FirebaseUtil.salvarUsuario();
 
         setResult(Activity.RESULT_OK, new Intent());
@@ -112,7 +112,7 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
         }
 
         perfil.setNome(etNome.getText().toString());
-        perfil.setControlaveisPermitidos(getIdControlaveisSelecionados());
+        perfil.setDispositivosPermitidos(getIdDispositivosSelecionados());
         FirebaseUtil.usuario.setPerfilAtivo(perfil);
         FirebaseUtil.salvarUsuario();
 
@@ -123,7 +123,7 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
 
     public void desativarPerfil(View view) {
         perfil.setNome(etNome.getText().toString());
-        perfil.setControlaveisPermitidos(getIdControlaveisSelecionados());
+        perfil.setDispositivosPermitidos(getIdDispositivosSelecionados());
         FirebaseUtil.usuario.setPerfilAtivo(null);
         FirebaseUtil.salvarUsuario();
 
@@ -132,19 +132,19 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
     }
 
     @NonNull
-    private List<String> getIdControlaveisSelecionados() {
-        List<String> idControlaveisSelecionados = new ArrayList<>();
+    private List<String> getIdDispositivosSelecionados() {
+        List<String> idDispositivosSelecionados = new ArrayList<>();
         SparseBooleanArray sparseBooleanArray = listView.getCheckedItemPositions();
 
         for (int i = 0; i < listView.getAdapter().getCount(); i++) {
             boolean checkboxSelecionado = sparseBooleanArray.get(i);
             if (checkboxSelecionado) {
-                Controlavel controlavel = (Controlavel) listView.getItemAtPosition(i);
-                idControlaveisSelecionados.add(controlavel.getId());
+                Dispositivo dispositivo = (Dispositivo) listView.getItemAtPosition(i);
+                idDispositivosSelecionados.add(dispositivo.getId());
             }
         }
 
-        return idControlaveisSelecionados;
+        return idDispositivosSelecionados;
     }
 
 }

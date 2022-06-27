@@ -3,13 +3,12 @@ package com.example.sobcontrole.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class Perfil implements Serializable {
 
     private String id;
     private String nome;
-    private List<String> controlaveisPermitidos;
+    private List<String> dispositivosPermitidos;
 
     public Perfil() {
     }
@@ -17,7 +16,7 @@ public class Perfil implements Serializable {
     public Perfil(String id, String nome) {
         this.id = id;
         this.nome = nome != null ? nome : "";
-        this.controlaveisPermitidos = new ArrayList<>();
+        this.dispositivosPermitidos = new ArrayList<>();
     }
 
     public String getId() {
@@ -32,16 +31,16 @@ public class Perfil implements Serializable {
         this.nome = nome;
     }
 
-    public List<String> getControlaveisPermitidos() {
-        return controlaveisPermitidos;
+    public List<String> getDispositivosPermitidos() {
+        return dispositivosPermitidos;
     }
 
-    public void setControlaveisPermitidos(List<String> controlaveisPermitidos) {
-        this.controlaveisPermitidos = controlaveisPermitidos;
+    public void setDispositivosPermitidos(List<String> dispositivosPermitidos) {
+        this.dispositivosPermitidos = dispositivosPermitidos;
     }
 
-    public boolean podeAcessarControlavel(String controlavelId) {
-        return controlaveisPermitidos.contains(controlavelId);
+    public boolean podeAcessarDispositivo(String dispositivoId) {
+        return dispositivosPermitidos.contains(dispositivoId);
     }
 
     @Override
@@ -49,7 +48,7 @@ public class Perfil implements Serializable {
         return "Perfil{" +
                 "id='" + id + '\'' +
                 ", nome='" + nome + '\'' +
-                ", controlaveisPermitidos=" + controlaveisPermitidos +
+                ", dispositivosPermitidos=" + dispositivosPermitidos +
                 '}';
     }
 }

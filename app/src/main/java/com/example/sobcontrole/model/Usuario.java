@@ -1,5 +1,7 @@
 package com.example.sobcontrole.model;
 
+import com.google.firebase.database.Exclude;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,29 +13,30 @@ public class Usuario implements Serializable {
     private String id;
     private String nome;
     private String email;
-    private List<Controlavel> controlaveis = Arrays.asList(new Controlavel[8]);
+    private List<Dispositivo> dispositivos = Arrays.asList(new Dispositivo[8]);
     private List<Perfil> perfis;
     private Perfil perfilAtivo;
     private Integer pin;
 
     public Usuario() {
-        inicializarControlaveis();
+        inicializarDispositivos();
         this.perfis = new ArrayList<>();
     }
 
-    private void inicializarControlaveis() {
-        for (int i = 0; i < controlaveis.size(); i++) {
-            controlaveis.set(i, new Controlavel(String.valueOf(i + 1), "", false, i + 1));
+    private void inicializarDispositivos() {
+        for (int i = 0; i < dispositivos.size(); i++) {
+            dispositivos.set(i, new Dispositivo(String.valueOf(i + 1), "", false, i + 1));
         }
     }
 
     public Usuario(String nome, String email, String senha) {
-        inicializarControlaveis();
+        inicializarDispositivos();
         this.nome = nome;
         this.email = email;
         this.perfis = new ArrayList<>();
     }
 
+    @Exclude
     public String getId() {
         return id;
     }
@@ -58,8 +61,8 @@ public class Usuario implements Serializable {
         this.email = email;
     }
 
-    public List<Controlavel> getControlaveis() {
-        return controlaveis;
+    public List<Dispositivo> getDispositivos() {
+        return dispositivos;
     }
 
     public List<Perfil> getPerfis() {
@@ -105,7 +108,7 @@ public class Usuario implements Serializable {
                 "id='" + id + '\'' +
                 ", nome='" + nome + '\'' +
                 ", email='" + email + '\'' +
-                ", controlaveis=" + controlaveis +
+                ", dispositivos=" + dispositivos +
                 ", perfis=" + perfis +
                 ", perfilAtivo=" + perfilAtivo +
                 ", pin=" + pin +

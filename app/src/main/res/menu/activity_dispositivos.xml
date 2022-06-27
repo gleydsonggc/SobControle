@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/activity_controlaveis_menu_salvar"
+        android:id="@+id/activity_dispositivos_menu_salvar"
         android:icon="@drawable/ic_fas_check"
         android:title="Salvar"
         app:iconTint="@color/white"

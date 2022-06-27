@@ -14,7 +14,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sobcontrole.R;
-import com.example.sobcontrole.model.Controlavel;
+import com.example.sobcontrole.model.Dispositivo;
 import com.example.sobcontrole.model.Perfil;
 import com.example.sobcontrole.util.FirebaseUtil;
 
@@ -26,7 +26,7 @@ public class PerfilCadastroActivity extends AppCompatActivity {
 
     private EditText etNome;
     private ListView listView;
-    private ArrayAdapter<Controlavel> arrayAdapter;
+    private ArrayAdapter<Dispositivo> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +35,8 @@ public class PerfilCadastroActivity extends AppCompatActivity {
         setTitle("Cadastrar perfil");
 
         etNome = findViewById(R.id.activity_perfil_cadastro_et_nome);
-        listView = findViewById(R.id.activity_perfil_cadastro_lv_controlaveis);
-        arrayAdapter = new ArrayAdapter<Controlavel>(this, android.R.layout.simple_list_item_checked, FirebaseUtil.usuario.getControlaveis().stream().filter(Controlavel::isHabilitado).collect(Collectors.toList())) {
+        listView = findViewById(R.id.activity_perfil_cadastro_lv_dispositivos);
+        arrayAdapter = new ArrayAdapter<Dispositivo>(this, android.R.layout.simple_list_item_checked, FirebaseUtil.usuario.getDispositivos().stream().filter(Dispositivo::isHabilitado).collect(Collectors.toList())) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 TextView view = (TextView) super.getView(position, convertView, parent);
@@ -52,20 +52,20 @@ public class PerfilCadastroActivity extends AppCompatActivity {
 
     public void cadastrarPerfil(View view) {
         SparseBooleanArray sparseBooleanArray = listView.getCheckedItemPositions();
-        List<Controlavel> controlaveisSelecionados = new ArrayList<>();
+        List<Dispositivo> dispositivosSelecionados = new ArrayList<>();
 
         for (int i = 0; i < listView.getAdapter().getCount(); i++) {
             boolean checkboxSelecionado = sparseBooleanArray.get(i);
             if (checkboxSelecionado) {
-                Controlavel controlavel = (Controlavel) listView.getItemAtPosition(i);
-                controlaveisSelecionados.add(controlavel);
+                Dispositivo dispositivo = (Dispositivo) listView.getItemAtPosition(i);
+                dispositivosSelecionados.add(dispositivo);
             }
         }
 
         String perfilId = String.valueOf(FirebaseUtil.usuario.getPerfis().size() + 1);
         String perfilNome = etNome.getText().toString();
         Perfil novoPerfil = new Perfil(perfilId, perfilNome);
-        controlaveisSelecionados.forEach(c -> novoPerfil.getControlaveisPermitidos().add(c.getId()));
+        dispositivosSelecionados.forEach(c -> novoPerfil.getDispositivosPermitidos().add(c.getId()));
 
         FirebaseUtil.usuario.getPerfis().add(novoPerfil);
 

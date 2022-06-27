@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
 
-    tools:context=".ui.activities.ControlaveisActivity">
+    tools:context=".ui.activities.DispositivosActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,179 +22,179 @@
             android:textStyle="bold" />
 
         <CheckBox
-            android:id="@+id/cbControlavel1"
+            android:id="@+id/cbDispositivo1"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv1" />
 
         <EditText
-            android:id="@+id/etControlavel1"
+            android:id="@+id/etDispositivo1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv1"
-            android:layout_toRightOf="@+id/cbControlavel1"
-            android:hint="Nome do controlável" />
+            android:layout_toRightOf="@+id/cbDispositivo1"
+            android:hint="Nome do dispositivo" />
 
         <TextView
             android:id="@+id/tv2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/cbControlavel1"
+            android:layout_below="@+id/cbDispositivo1"
             android:text="Relé 2"
             android:textColor="#2196F3"
             android:textStyle="bold" />
 
         <CheckBox
-            android:id="@+id/cbControlavel2"
+            android:id="@+id/cbDispositivo2"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv2" />
 
         <EditText
-            android:id="@+id/etControlavel2"
+            android:id="@+id/etDispositivo2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv2"
-            android:layout_toRightOf="@id/cbControlavel2"
-            android:hint="Nome do controlável" />
+            android:layout_toRightOf="@id/cbDispositivo2"
+            android:hint="Nome do dispositivo" />
 
         <TextView
             android:id="@+id/tv3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/cbControlavel2"
+            android:layout_below="@+id/cbDispositivo2"
             android:text="Relé 3"
             android:textColor="#2196F3"
             android:textStyle="bold" />
 
         <CheckBox
-            android:id="@+id/cbControlavel3"
+            android:id="@+id/cbDispositivo3"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv3" />
 
         <EditText
-            android:id="@+id/etControlavel3"
+            android:id="@+id/etDispositivo3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv3"
-            android:layout_toRightOf="@id/cbControlavel3"
-            android:hint="Nome do controlável" />
+            android:layout_toRightOf="@id/cbDispositivo3"
+            android:hint="Nome do dispositivo" />
 
         <TextView
             android:id="@+id/tv4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/cbControlavel3"
+            android:layout_below="@+id/cbDispositivo3"
             android:text="Relé 4"
             android:textColor="#2196F3"
             android:textStyle="bold" />
 
         <CheckBox
-            android:id="@+id/cbControlavel4"
+            android:id="@+id/cbDispositivo4"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv4" />
 
         <EditText
-            android:id="@+id/etControlavel4"
+            android:id="@+id/etDispositivo4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv4"
-            android:layout_toRightOf="@id/cbControlavel4"
-            android:hint="Nome do controlável" />
+            android:layout_toRightOf="@id/cbDispositivo4"
+            android:hint="Nome do dispositivo" />
 
         <TextView
             android:id="@+id/tv5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/cbControlavel4"
+            android:layout_below="@+id/cbDispositivo4"
             android:text="Relé 5"
             android:textColor="#2196F3"
             android:textStyle="bold" />
 
         <CheckBox
-            android:id="@+id/cbControlavel5"
+            android:id="@+id/cbDispositivo5"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv5" />
 
         <EditText
-            android:id="@+id/etControlavel5"
+            android:id="@+id/etDispositivo5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv5"
-            android:layout_toRightOf="@id/cbControlavel5"
-            android:hint="Nome do controlável" />
+            android:layout_toRightOf="@id/cbDispositivo5"
+            android:hint="Nome do dispositivo" />
 
         <TextView
             android:id="@+id/tv6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/cbControlavel5"
+            android:layout_below="@+id/cbDispositivo5"
             android:text="Relé 6"
             android:textColor="#2196F3"
             android:textStyle="bold" />
 
         <CheckBox
-            android:id="@+id/cbControlavel6"
+            android:id="@+id/cbDispositivo6"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv6" />
 
         <EditText
-            android:id="@+id/etControlavel6"
+            android:id="@+id/etDispositivo6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv6"
-            android:layout_toRightOf="@id/cbControlavel6"
-            android:hint="Nome do controlável" />
+            android:layout_toRightOf="@id/cbDispositivo6"
+            android:hint="Nome do dispositivo" />
 
         <TextView
             android:id="@+id/tv7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/cbControlavel6"
+            android:layout_below="@+id/cbDispositivo6"
             android:text="Relé 7"
             android:textColor="#2196F3"
             android:textStyle="bold" />
 
         <CheckBox
-            android:id="@+id/cbControlavel7"
+            android:id="@+id/cbDispositivo7"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv7" />
 
         <EditText
-            android:id="@+id/etControlavel7"
+            android:id="@+id/etDispositivo7"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv7"
-            android:layout_toRightOf="@id/cbControlavel7"
-            android:hint="Nome do controlável" />
+            android:layout_toRightOf="@id/cbDispositivo7"
+            android:hint="Nome do dispositivo" />
 
         <TextView
             android:id="@+id/tv8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/cbControlavel7"
+            android:layout_below="@+id/cbDispositivo7"
             android:text="Relé 8"
             android:textColor="#2196F3"
             android:textStyle="bold" />
 
         <CheckBox
-            android:id="@+id/cbControlavel8"
+            android:id="@+id/cbDispositivo8"
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv8" />
 
         <EditText
-            android:id="@+id/etControlavel8"
+            android:id="@+id/etDispositivo8"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv8"
-            android:layout_toRightOf="@id/cbControlavel8"
-            android:hint="Nome do controlável" />
+            android:layout_toRightOf="@id/cbDispositivo8"
+            android:hint="Nome do dispositivo" />
 
     </RelativeLayout>
 </ScrollView>
