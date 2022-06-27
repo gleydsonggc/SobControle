@@ -15,25 +15,22 @@ import android.widget.EditText;
 import com.example.sobcontrole.R;
 import com.example.sobcontrole.model.Usuario;
 import com.example.sobcontrole.repository.UsuarioRepository;
+import com.example.sobcontrole.util.FirebaseUtil;
 
 public class PinActivity extends AppCompatActivity {
 
     private EditText etPin;
     private MenuItem menuItemSalvar;
-    private Usuario usuarioLogado;
-    private UsuarioRepository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pin);
 
-        repository = UsuarioRepository.getInstance();
-        usuarioLogado = repository.getUsuarioLogado();
         etPin = findViewById(R.id.activity_pin_pin);
 
-        if (usuarioLogado.getPin() != null) {
-            etPin.setText(usuarioLogado.getPin().toString());
+        if (FirebaseUtil.usuario.getPin() != null) {
+            etPin.setText(FirebaseUtil.usuario.getPin().toString());
         }
 
         etPin.addTextChangedListener(new TextWatcher() {
@@ -68,8 +65,8 @@ public class PinActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.activity_pin_menu_salvar:
                 String pin = etPin.getText().toString();
-                usuarioLogado.setPin(Integer.valueOf(pin));
-                repository.atualizar(usuarioLogado);
+                FirebaseUtil.usuario.setPin(Integer.valueOf(pin));
+                FirebaseUtil.salvarUsuario();
                 setResult(Activity.RESULT_OK, new Intent());
                 finish();
                 return true;

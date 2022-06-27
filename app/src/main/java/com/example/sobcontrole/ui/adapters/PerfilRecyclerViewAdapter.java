@@ -18,6 +18,7 @@ import com.example.sobcontrole.model.Perfil;
 import com.example.sobcontrole.model.Usuario;
 import com.example.sobcontrole.repository.UsuarioRepository;
 import com.example.sobcontrole.ui.activities.PerfilEdicaoActivity;
+import com.example.sobcontrole.util.FirebaseUtil;
 
 import java.util.List;
 
@@ -25,8 +26,6 @@ public class PerfilRecyclerViewAdapter extends RecyclerView.Adapter<PerfilRecycl
 
     private List<Perfil> perfis;
     private Context parentContext;
-    private UsuarioRepository repository;
-    private Usuario usuarioLogado;
 
     public PerfilRecyclerViewAdapter(List<Perfil> perfis) {
         this.perfis = perfis;
@@ -36,8 +35,6 @@ public class PerfilRecyclerViewAdapter extends RecyclerView.Adapter<PerfilRecycl
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         parentContext = parent.getContext();
-        repository = UsuarioRepository.getInstance();
-        usuarioLogado = repository.getUsuarioLogado();
 
         View view = LayoutInflater
                 .from(parent.getContext())
@@ -80,18 +77,18 @@ public class PerfilRecyclerViewAdapter extends RecyclerView.Adapter<PerfilRecycl
 
         private void deletarPerfil() {
             if (isPerfilAtivo(perfil)) {
-                usuarioLogado.setPerfilAtivo(null);
+                FirebaseUtil.usuario.setPerfilAtivo(null);
             }
-            usuarioLogado.getPerfis().remove(perfil);
-            repository.atualizar(usuarioLogado);
-            setPerfis(usuarioLogado.getPerfis());
+            FirebaseUtil.usuario.getPerfis().remove(perfil);
+            FirebaseUtil.salvarUsuario();
+            setPerfis(FirebaseUtil.usuario.getPerfis());
             notifyDataSetChanged();
         }
 
         private boolean isPerfilAtivo(Perfil perfil) {
-            return usuarioLogado != null
-                    && usuarioLogado.getPerfilAtivo() != null
-                    && usuarioLogado.getPerfilAtivo().getId().equals(perfil.getId());
+            return FirebaseUtil.usuario != null
+                    && FirebaseUtil.usuario.getPerfilAtivo() != null
+                    && FirebaseUtil.usuario.getPerfilAtivo().getId().equals(perfil.getId());
         }
 
         @Override

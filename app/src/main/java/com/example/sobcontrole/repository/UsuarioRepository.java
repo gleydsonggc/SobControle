@@ -43,9 +43,9 @@ public final class UsuarioRepository {
         usuario.getControlaveis().get(7).setNome("Despensa");
 
         ArrayList<Perfil> perfis = new ArrayList<>();
-        perfis.add(new Perfil("Filho 1"));
-        perfis.add(new Perfil("Filho 2"));
-        perfis.add(new Perfil("Filho 3"));
+//        perfis.add(new Perfil("Filho 1"));
+//        perfis.add(new Perfil("Filho 2"));
+//        perfis.add(new Perfil("Filho 3"));
         usuario.getPerfis().addAll(perfis);
 
         adicionar(usuario);

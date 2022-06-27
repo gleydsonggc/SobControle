@@ -7,15 +7,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.sobcontrole.R;
 import com.example.sobcontrole.model.Controlavel;
 import com.example.sobcontrole.model.Perfil;
 import com.example.sobcontrole.model.Usuario;
 import com.example.sobcontrole.repository.UsuarioRepository;
+import com.example.sobcontrole.util.FirebaseUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +28,6 @@ public class PerfilCadastroActivity extends AppCompatActivity {
 
     private EditText etNome;
     private ListView listView;
-    private UsuarioRepository repository;
-    private Usuario usuarioLogado;
     private ArrayAdapter<Controlavel> arrayAdapter;
 
     @Override
@@ -35,11 +36,16 @@ public class PerfilCadastroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_perfil_cadastro);
         setTitle("Cadastrar perfil");
 
-        repository = UsuarioRepository.getInstance();
-        usuarioLogado = repository.getUsuarioLogado();
         etNome = findViewById(R.id.activity_perfil_cadastro_et_nome);
         listView = findViewById(R.id.activity_perfil_cadastro_lv_controlaveis);
-        arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_checked, usuarioLogado.getControlaveis().stream().filter(Controlavel::isHabilitado).collect(Collectors.toList()));
+        arrayAdapter = new ArrayAdapter<Controlavel>(this, android.R.layout.simple_list_item_checked, FirebaseUtil.usuario.getControlaveis().stream().filter(Controlavel::isHabilitado).collect(Collectors.toList())) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                TextView view = (TextView) super.getView(position, convertView, parent);
+                view.setText(getItem(position).getNome());
+                return view;
+            }
+        };
 
         listView.setAdapter(arrayAdapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -58,12 +64,14 @@ public class PerfilCadastroActivity extends AppCompatActivity {
             }
         }
 
-        Perfil novoPerfil = new Perfil(etNome.getText().toString());
+        String perfilId = String.valueOf(FirebaseUtil.usuario.getPerfis().size() + 1);
+        String perfilNome = etNome.getText().toString();
+        Perfil novoPerfil = new Perfil(perfilId, perfilNome);
         controlaveisSelecionados.forEach(c -> novoPerfil.getControlaveisPermitidos().add(c.getId()));
 
-        usuarioLogado.getPerfis().add(novoPerfil);
+        FirebaseUtil.usuario.getPerfis().add(novoPerfil);
 
-        repository.atualizar(usuarioLogado);
+        FirebaseUtil.salvarUsuario();
 
         setResult(Activity.RESULT_OK, new Intent());
         finish();

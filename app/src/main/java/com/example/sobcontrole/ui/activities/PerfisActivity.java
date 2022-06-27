@@ -17,6 +17,7 @@ import com.example.sobcontrole.model.Perfil;
 import com.example.sobcontrole.model.Usuario;
 import com.example.sobcontrole.repository.UsuarioRepository;
 import com.example.sobcontrole.ui.adapters.PerfilRecyclerViewAdapter;
+import com.example.sobcontrole.util.FirebaseUtil;
 
 import java.util.Comparator;
 import java.util.List;
@@ -26,8 +27,6 @@ public class PerfisActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private PerfilRecyclerViewAdapter adapter;
-    private UsuarioRepository repository;
-    private Usuario usuarioLogado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +34,6 @@ public class PerfisActivity extends AppCompatActivity {
         setContentView(R.layout.activity_perfis);
         setTitle("Perfis");
 
-        repository = UsuarioRepository.getInstance();
-        usuarioLogado = repository.getUsuarioLogado();
         recyclerView = findViewById(R.id.activity_perfis_reciclyerview);
         adapter = new PerfilRecyclerViewAdapter(getPerfis());
 
@@ -46,7 +43,7 @@ public class PerfisActivity extends AppCompatActivity {
 
     @NonNull
     private List<Perfil> getPerfis() {
-        return usuarioLogado.getPerfis()
+        return FirebaseUtil.usuario.getPerfis()
                 .stream()
                 .sorted(Comparator.comparing(Perfil::getNome, String.CASE_INSENSITIVE_ORDER))
                 .collect(Collectors.toList());

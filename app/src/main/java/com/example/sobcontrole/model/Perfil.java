@@ -12,11 +12,10 @@ public class Perfil implements Serializable {
     private List<String> controlaveisPermitidos;
 
     public Perfil() {
-        this("");
     }
 
-    public Perfil(String nome) {
-        this.id = UUID.randomUUID().toString();
+    public Perfil(String id, String nome) {
+        this.id = id;
         this.nome = nome != null ? nome : "";
         this.controlaveisPermitidos = new ArrayList<>();
     }

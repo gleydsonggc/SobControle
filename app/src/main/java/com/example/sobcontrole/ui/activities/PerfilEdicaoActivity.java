@@ -9,10 +9,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sobcontrole.R;
@@ -20,6 +22,7 @@ import com.example.sobcontrole.model.Controlavel;
 import com.example.sobcontrole.model.Perfil;
 import com.example.sobcontrole.model.Usuario;
 import com.example.sobcontrole.repository.UsuarioRepository;
+import com.example.sobcontrole.util.FirebaseUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +30,12 @@ import java.util.stream.Collectors;
 
 public class PerfilEdicaoActivity extends AppCompatActivity {
 
-    private UsuarioRepository repository;
-    private Usuario usuarioLogado;
     private EditText etNome;
     private ListView listView;
     private Perfil perfil;
     private Button btAtivar;
     private Button btDesativar;
+    private ArrayAdapter<Controlavel> arrayAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +48,8 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
         btAtivar = findViewById(R.id.activity_perfil_edicao_bt_ativar);
         btDesativar = findViewById(R.id.activity_perfil_edicao_bt_desativar);
 
-        repository = UsuarioRepository.getInstance();
-        usuarioLogado = repository.getUsuarioLogado();
-
         String idPerfil = getIntent().getStringExtra("idPerfil");
-        perfil = usuarioLogado.getPerfis()
+        perfil = FirebaseUtil.usuario.getPerfis()
                 .stream()
                 .filter(p -> p.getId().equals(idPerfil))
                 .findFirst()
@@ -62,8 +61,14 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
             finish();
         }
 
-
-        ArrayAdapter<Controlavel> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_checked, usuarioLogado.getControlaveis().stream().filter(Controlavel::isHabilitado).collect(Collectors.toList()));
+        arrayAdapter = new ArrayAdapter<Controlavel>(this, android.R.layout.simple_list_item_checked, FirebaseUtil.usuario.getControlaveis().stream().filter(Controlavel::isHabilitado).collect(Collectors.toList())) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                TextView view = (TextView) super.getView(position, convertView, parent);
+                view.setText(getItem(position).getNome());
+                return view;
+            }
+        };
 
         listView.setAdapter(arrayAdapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
@@ -82,22 +87,22 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
     }
 
     private boolean isPerfilAtivo(Perfil perfil) {
-        return usuarioLogado != null
-                && usuarioLogado.getPerfilAtivo() != null
-                && usuarioLogado.getPerfilAtivo().getId().equals(perfil.getId());
+        return FirebaseUtil.usuario != null
+                && FirebaseUtil.usuario.getPerfilAtivo() != null
+                && FirebaseUtil.usuario.getPerfilAtivo().getId().equals(perfil.getId());
     }
 
     public void salvarPerfil(View view) {
         perfil.setNome(etNome.getText().toString());
         perfil.setControlaveisPermitidos(getIdControlaveisSelecionados());
-        repository.atualizar(usuarioLogado);
+        FirebaseUtil.salvarUsuario();
 
         setResult(Activity.RESULT_OK, new Intent());
         finish();
     }
 
     public void ativarPerfil(View view) {
-        if (usuarioLogado.getPin() == null) {
+        if (FirebaseUtil.usuario.getPin() == null) {
             new AlertDialog.Builder(this)
                     .setTitle("PIN não configurado")
                     .setMessage("Antes de ativar um perfil, você deve configurar o PIN.")
@@ -110,8 +115,8 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
 
         perfil.setNome(etNome.getText().toString());
         perfil.setControlaveisPermitidos(getIdControlaveisSelecionados());
-        usuarioLogado.setPerfilAtivo(perfil);
-        repository.atualizar(usuarioLogado);
+        FirebaseUtil.usuario.setPerfilAtivo(perfil);
+        FirebaseUtil.salvarUsuario();
 
         Intent intent = new Intent(this, PrincipalActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -121,8 +126,8 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
     public void desativarPerfil(View view) {
         perfil.setNome(etNome.getText().toString());
         perfil.setControlaveisPermitidos(getIdControlaveisSelecionados());
-        usuarioLogado.setPerfilAtivo(null);
-        repository.atualizar(usuarioLogado);
+        FirebaseUtil.usuario.setPerfilAtivo(null);
+        FirebaseUtil.salvarUsuario();
 
         setResult(Activity.RESULT_OK, new Intent());
         finish();
