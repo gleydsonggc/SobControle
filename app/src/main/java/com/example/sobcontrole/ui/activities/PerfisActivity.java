@@ -1,21 +1,19 @@
 package com.example.sobcontrole.ui.activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.sobcontrole.R;
 import com.example.sobcontrole.model.Perfil;
-import com.example.sobcontrole.model.Usuario;
-import com.example.sobcontrole.repository.UsuarioRepository;
 import com.example.sobcontrole.ui.adapters.PerfilRecyclerViewAdapter;
 import com.example.sobcontrole.util.FirebaseUtil;
 

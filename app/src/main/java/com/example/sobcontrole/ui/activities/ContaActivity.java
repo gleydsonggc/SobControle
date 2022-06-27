@@ -1,16 +1,13 @@
 package com.example.sobcontrole.ui.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.sobcontrole.R;
-import com.example.sobcontrole.model.Usuario;
-import com.example.sobcontrole.repository.UsuarioRepository;
 import com.example.sobcontrole.util.FirebaseUtil;
-import com.google.firebase.database.FirebaseDatabase;
 
 public class ContaActivity extends AppCompatActivity {
 

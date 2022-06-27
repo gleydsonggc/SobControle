@@ -1,18 +1,16 @@
 package com.example.sobcontrole.ui.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.sobcontrole.R;
 import com.example.sobcontrole.model.Controlavel;
-import com.example.sobcontrole.model.Usuario;
-import com.example.sobcontrole.repository.UsuarioRepository;
 import com.example.sobcontrole.util.FirebaseUtil;
 
 public class ControlaveisActivity extends AppCompatActivity {

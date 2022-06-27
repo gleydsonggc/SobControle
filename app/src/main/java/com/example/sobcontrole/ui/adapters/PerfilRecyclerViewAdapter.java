@@ -15,8 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sobcontrole.R;
 import com.example.sobcontrole.model.Perfil;
-import com.example.sobcontrole.model.Usuario;
-import com.example.sobcontrole.repository.UsuarioRepository;
 import com.example.sobcontrole.ui.activities.PerfilEdicaoActivity;
 import com.example.sobcontrole.util.FirebaseUtil;
 

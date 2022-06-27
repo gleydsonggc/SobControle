@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import com.example.sobcontrole.R;
 import com.example.sobcontrole.model.Usuario;
-import com.example.sobcontrole.repository.UsuarioRepository;
 import com.example.sobcontrole.ui.listeners.FirebaseAuthListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,7 +22,6 @@ public class CadastroActivity extends AppCompatActivity {
     private EditText etNome;
     private EditText etEmail;
     private EditText etSenha;
-    private UsuarioRepository repository;
     private FirebaseAuth fbAuth;
     private FirebaseAuthListener authListener;
 
@@ -36,7 +34,6 @@ public class CadastroActivity extends AppCompatActivity {
         fbAuth = FirebaseAuth.getInstance();
         authListener = new FirebaseAuthListener(this);
 
-        repository = UsuarioRepository.getInstance();
         etNome = findViewById(R.id.activity_cadastro_et_nome);
         etEmail = findViewById(R.id.activity_cadastro_et_email);
         etSenha = findViewById(R.id.activity_cadastro_et_senha);

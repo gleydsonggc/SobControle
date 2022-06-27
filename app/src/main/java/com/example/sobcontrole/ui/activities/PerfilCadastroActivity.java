@@ -1,7 +1,5 @@
 package com.example.sobcontrole.ui.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,11 +11,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.sobcontrole.R;
 import com.example.sobcontrole.model.Controlavel;
 import com.example.sobcontrole.model.Perfil;
-import com.example.sobcontrole.model.Usuario;
-import com.example.sobcontrole.repository.UsuarioRepository;
 import com.example.sobcontrole.util.FirebaseUtil;
 
 import java.util.ArrayList;

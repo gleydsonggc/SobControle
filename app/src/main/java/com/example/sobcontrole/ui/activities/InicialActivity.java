@@ -1,14 +1,12 @@
 package com.example.sobcontrole.ui.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.sobcontrole.R;
-import com.example.sobcontrole.model.Usuario;
-import com.example.sobcontrole.repository.UsuarioRepository;
 import com.example.sobcontrole.ui.listeners.FirebaseAuthListener;
 import com.google.firebase.auth.FirebaseAuth;
 
