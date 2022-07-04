@@ -65,9 +65,10 @@ public class PinActivity extends AppCompatActivity {
             case R.id.activity_pin_menu_salvar:
                 String pin = etPin.getText().toString();
                 FirebaseUtil.usuario.setPin(Integer.valueOf(pin));
-                FirebaseUtil.salvarUsuario();
-                setResult(Activity.RESULT_OK, new Intent());
-                finish();
+                FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> {
+                    setResult(Activity.RESULT_OK, new Intent());
+                    finish();
+                });
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

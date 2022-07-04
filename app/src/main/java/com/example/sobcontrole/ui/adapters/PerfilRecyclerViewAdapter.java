@@ -66,27 +66,16 @@ public class PerfilRecyclerViewAdapter extends RecyclerView.Adapter<PerfilRecycl
             imageView = itemView.findViewById(R.id.item_perfil_iv_lixeira);
 
             itemView.setOnClickListener(this);
-
-            imageView.setOnClickListener(v -> {
-                deletarPerfil();
-                Toast.makeText(itemView.getContext(), "Perfil deletado.", Toast.LENGTH_SHORT).show();
-            });
+            imageView.setOnClickListener(v -> deletarPerfil());
         }
 
         private void deletarPerfil() {
-            if (isPerfilAtivo(perfil)) {
-                FirebaseUtil.usuario.setPerfilAtivo(null);
-            }
-            FirebaseUtil.usuario.getPerfis().remove(perfil);
-            FirebaseUtil.salvarUsuario();
-            setPerfis(FirebaseUtil.usuario.getPerfis());
-            notifyDataSetChanged();
-        }
-
-        private boolean isPerfilAtivo(Perfil perfil) {
-            return FirebaseUtil.usuario != null
-                    && FirebaseUtil.usuario.getPerfilAtivo() != null
-                    && FirebaseUtil.usuario.getPerfilAtivo().getId().equals(perfil.getId());
+            FirebaseUtil.usuario.removerPerfil(perfil);
+            FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> {
+                setPerfis(FirebaseUtil.usuario.getPerfisOrdemAlfabetica());
+                notifyDataSetChanged();
+                Toast.makeText(itemView.getContext(), "Perfil deletado.", Toast.LENGTH_SHORT).show();
+            });
         }
 
         @Override
@@ -98,7 +87,7 @@ public class PerfilRecyclerViewAdapter extends RecyclerView.Adapter<PerfilRecycl
 
         public void bind(Perfil perfil) {
             this.perfil = perfil;
-            textView.setText(perfil.getNome() + (isPerfilAtivo(perfil) ? " (Ativo)" : ""));
+            textView.setText(perfil.getNome() + (FirebaseUtil.usuario.isPerfilAtivo(perfil) ? " (Ativo)" : ""));
         }
     }
 }

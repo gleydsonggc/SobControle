@@ -59,14 +59,6 @@
             android:onClick="ativarPerfil"
             android:text="Ativar" />
 
-        <Button
-            android:id="@+id/activity_perfil_edicao_bt_desativar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:onClick="desativarPerfil"
-            android:text="Desativar" />
-
     </LinearLayout>
 
 </ScrollView>

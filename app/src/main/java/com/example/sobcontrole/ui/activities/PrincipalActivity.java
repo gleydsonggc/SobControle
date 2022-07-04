@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -36,10 +37,13 @@ public class PrincipalActivity extends AppCompatActivity {
     private MenuItem menuSair;
     private MenuItem menuSairPerfil;
     private FirebaseAuthListener authListener;
+    private String TAG = PrincipalActivity.class.getCanonicalName();
+    private boolean menuDeveSerConfigurado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: start");
         setContentView(R.layout.activity_principal);
         setTitle("Sob Controle");
 
@@ -48,21 +52,7 @@ public class PrincipalActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.activity_principal_recyclerview);
         int qtdColunas = 2;
         recyclerView.setLayoutManager(new GridLayoutManager(this, qtdColunas));
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_principal, menu);
-        menuMinhaConta = menu.findItem(R.id.activity_principal_menu_item_minhaconta);
-        menuDispositivos = menu.findItem(R.id.activity_principal_menu_item_dispositivos);
-        menuPerfis = menu.findItem(R.id.activity_principal_menu_item_perfis);
-        menuSair = menu.findItem(R.id.activity_principal_menu_item_sair);
-        menuSairPerfil = menu.findItem(R.id.activity_principal_menu_item_sair_do_perfil);
-        return true;
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
         FirebaseUtil.getUsuarioRef().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -70,17 +60,43 @@ public class PrincipalActivity extends AppCompatActivity {
                 if (tempUsuario != null) {
                     tempUsuario.setId(dataSnapshot.getKey());
                     FirebaseUtil.usuario = tempUsuario;
-                    adapter = new DispositivoCardRecyclerViewAdapter(FirebaseUtil.usuario.getDispositivos());
-                    recyclerView.setAdapter(adapter);
-                    configurarMenu();
+
+                    if (recyclerView.getAdapter() == null) {
+                        adapter = new DispositivoCardRecyclerViewAdapter(FirebaseUtil.usuario.getDispositivosPodemSerExibidos());
+                        recyclerView.setAdapter(adapter);
+                    } else {
+                        adapter.setDispositivos(FirebaseUtil.usuario.getDispositivosPodemSerExibidos());
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    menuDeveSerConfigurado = true;
+                    Log.d(TAG, "onDataChange: onCreate");
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {  }
         });
+        Log.d(TAG, "onCreate: finish");
+    }
 
-        return super.onPrepareOptionsMenu(menu);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(TAG, "onCreateOptionsMenu: start");
+        getMenuInflater().inflate(R.menu.activity_principal, menu);
+        menuMinhaConta = menu.findItem(R.id.activity_principal_menu_item_minhaconta);
+        menuDispositivos = menu.findItem(R.id.activity_principal_menu_item_dispositivos);
+        menuPerfis = menu.findItem(R.id.activity_principal_menu_item_perfis);
+        menuSair = menu.findItem(R.id.activity_principal_menu_item_sair);
+        menuSairPerfil = menu.findItem(R.id.activity_principal_menu_item_sair_do_perfil);
+
+        if (menuDeveSerConfigurado) {
+            configurarMenu();
+            menuDeveSerConfigurado = false;
+        }
+
+        Log.d(TAG, "onCreateOptionsMenu: finish");
+        return true;
     }
 
     private void configurarMenu() {
@@ -112,10 +128,8 @@ public class PrincipalActivity extends AppCompatActivity {
                 startActivity(new Intent(this, PerfisActivity.class));
                 return true;
             case R.id.activity_principal_menu_item_sair:
-                FirebaseAuth mAuth = FirebaseAuth.getInstance();
-                FirebaseUser user = mAuth.getCurrentUser();
-                if (user != null) {
-                    mAuth.signOut();
+                if (FirebaseUtil.getCurrentUser() != null) {
+                    FirebaseUtil.getFbAuth().signOut();
                 } else {
                     Toast.makeText(PrincipalActivity.this, "Erro!", Toast.LENGTH_SHORT).show();
                 }
@@ -134,9 +148,8 @@ public class PrincipalActivity extends AppCompatActivity {
                                 Toast.makeText(this, "PIN incorreto.", Toast.LENGTH_SHORT).show();
                                 return;
                             }
-                            FirebaseUtil.usuario.setPerfilAtivo(null);
-                            FirebaseUtil.salvarUsuario();
-                            recreate();
+                            FirebaseUtil.usuario.desativarPerfil();
+                            FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> recreate());
                         })
                         .show();
                 return true;
@@ -148,13 +161,17 @@ public class PrincipalActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        Log.d(TAG, "onStart: start");
         FirebaseUtil.getFbAuth().addAuthStateListener(authListener);
+        Log.d(TAG, "onStart: finish");
     }
 
     @Override
     public void onStop() {
         super.onStop();
+        Log.d(TAG, "onStop: start");
         FirebaseUtil.getFbAuth().removeAuthStateListener(authListener);
+        Log.d(TAG, "onStop: finish");
     }
 
 }

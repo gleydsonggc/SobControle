@@ -10,13 +10,17 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sobcontrole.R;
 import com.example.sobcontrole.model.Dispositivo;
 import com.example.sobcontrole.model.Perfil;
+import com.example.sobcontrole.model.Usuario;
 import com.example.sobcontrole.util.FirebaseUtil;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +40,10 @@ public class PerfilCadastroActivity extends AppCompatActivity {
 
         etNome = findViewById(R.id.activity_perfil_cadastro_et_nome);
         listView = findViewById(R.id.activity_perfil_cadastro_lv_dispositivos);
-        arrayAdapter = new ArrayAdapter<Dispositivo>(this, android.R.layout.simple_list_item_checked, FirebaseUtil.usuario.getDispositivos().stream().filter(Dispositivo::isHabilitado).collect(Collectors.toList())) {
+
+        arrayAdapter = new ArrayAdapter<Dispositivo>(this,
+                android.R.layout.simple_list_item_checked,
+                FirebaseUtil.usuario.getDispositivosHabilitados()) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 TextView view = (TextView) super.getView(position, convertView, parent);
@@ -49,30 +56,26 @@ public class PerfilCadastroActivity extends AppCompatActivity {
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
     }
 
-
     public void cadastrarPerfil(View view) {
+        String perfilNome = etNome.getText().toString();
+        FirebaseUtil.usuario.adicionarPerfil(perfilNome, getIdDispositivosSelecionados());
+        FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> finish());
+    }
+
+    @NonNull
+    private List<String> getIdDispositivosSelecionados() {
+        List<String> idDispositivosSelecionados = new ArrayList<>();
         SparseBooleanArray sparseBooleanArray = listView.getCheckedItemPositions();
-        List<Dispositivo> dispositivosSelecionados = new ArrayList<>();
 
         for (int i = 0; i < listView.getAdapter().getCount(); i++) {
             boolean checkboxSelecionado = sparseBooleanArray.get(i);
             if (checkboxSelecionado) {
                 Dispositivo dispositivo = (Dispositivo) listView.getItemAtPosition(i);
-                dispositivosSelecionados.add(dispositivo);
+                idDispositivosSelecionados.add(dispositivo.getId());
             }
         }
 
-        String perfilId = String.valueOf(FirebaseUtil.usuario.getPerfis().size() + 1);
-        String perfilNome = etNome.getText().toString();
-        Perfil novoPerfil = new Perfil(perfilId, perfilNome);
-        dispositivosSelecionados.forEach(c -> novoPerfil.getDispositivosPermitidos().add(c.getId()));
-
-        FirebaseUtil.usuario.getPerfis().add(novoPerfil);
-
-        FirebaseUtil.salvarUsuario();
-
-        setResult(Activity.RESULT_OK, new Intent());
-        finish();
+        return idDispositivosSelecionados;
     }
 
 }

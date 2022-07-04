@@ -20,6 +20,13 @@ public class Dispositivo implements Serializable {
         this.rele = rele;
     }
 
+    public Dispositivo(Dispositivo dispositivo) {
+        this.id = dispositivo.getId();
+        this.nome = dispositivo.getNome();
+        this.habilitado = dispositivo.isHabilitado();
+        this.rele = dispositivo.getRele();
+    }
+
     public String getId() {
         return id;
     }
@@ -42,6 +49,14 @@ public class Dispositivo implements Serializable {
 
     public void setHabilitado(boolean habilitado) {
         this.habilitado = habilitado;
+    }
+
+    public int getRele() {
+        return rele;
+    }
+
+    public void setRele(int rele) {
+        this.rele = rele;
     }
 
     @Override

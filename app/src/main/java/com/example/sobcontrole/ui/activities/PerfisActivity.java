@@ -33,18 +33,10 @@ public class PerfisActivity extends AppCompatActivity {
         setTitle("Perfis");
 
         recyclerView = findViewById(R.id.activity_perfis_reciclyerview);
-        adapter = new PerfilRecyclerViewAdapter(getPerfis());
+        adapter = new PerfilRecyclerViewAdapter(FirebaseUtil.usuario.getPerfisOrdemAlfabetica());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
-    }
-
-    @NonNull
-    private List<Perfil> getPerfis() {
-        return FirebaseUtil.usuario.getPerfis()
-                .stream()
-                .sorted(Comparator.comparing(Perfil::getNome, String.CASE_INSENSITIVE_ORDER))
-                .collect(Collectors.toList());
     }
 
     @Override
@@ -57,10 +49,10 @@ public class PerfisActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.activity_perfis_menu_item_adicionar:
-                startActivityForResult(new Intent(this, PerfilCadastroActivity.class), 10);
+                startActivity(new Intent(this, PerfilCadastroActivity.class));
                 return true;
             case R.id.activity_perfis_menu_item_configurar_pin:
-                startActivityForResult(new Intent(this, PinActivity.class), 20);
+                startActivity(new Intent(this, PinActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -68,11 +60,9 @@ public class PerfisActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            adapter.setPerfis(getPerfis());
-            adapter.notifyDataSetChanged();
-        }
+    protected void onStart() {
+        super.onStart();
+        adapter.setPerfis(FirebaseUtil.usuario.getPerfisOrdemAlfabetica());
+        adapter.notifyDataSetChanged();
     }
 }

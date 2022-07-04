@@ -34,6 +34,7 @@ public class FirebaseAuthListener implements FirebaseAuth.AuthStateListener {
         }
 
         if (intent != null) {
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             activity.startActivity(intent);
             activity.finish();
         }

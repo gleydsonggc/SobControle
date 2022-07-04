@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.sobcontrole.R;
 import com.example.sobcontrole.model.Dispositivo;
 import com.example.sobcontrole.model.Perfil;
+import com.example.sobcontrole.model.Usuario;
 import com.example.sobcontrole.util.FirebaseUtil;
 
 import java.util.ArrayList;
@@ -32,7 +33,6 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
     private ListView listView;
     private Perfil perfil;
     private Button btAtivar;
-    private Button btDesativar;
     private ArrayAdapter<Dispositivo> arrayAdapter;
 
     @Override
@@ -44,22 +44,14 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
         etNome = findViewById(R.id.activity_perfil_edicao_et_nome);
         listView = findViewById(R.id.activity_perfil_edicao_lv_dispositivos);
         btAtivar = findViewById(R.id.activity_perfil_edicao_bt_ativar);
-        btDesativar = findViewById(R.id.activity_perfil_edicao_bt_desativar);
 
         String idPerfil = getIntent().getStringExtra("idPerfil");
-        perfil = FirebaseUtil.usuario.getPerfis()
-                .stream()
-                .filter(p -> p.getId().equals(idPerfil))
-                .findFirst()
-                .orElse(null);
-        if (perfil != null) {
-            etNome.setText(perfil.getNome());
-        } else {
-            Toast.makeText(this, "Perfil inválido", Toast.LENGTH_SHORT).show();
-            finish();
-        }
+        perfil = FirebaseUtil.usuario.getPerfilComId(idPerfil);
+        etNome.setText(perfil.getNome());
 
-        arrayAdapter = new ArrayAdapter<Dispositivo>(this, android.R.layout.simple_list_item_checked, FirebaseUtil.usuario.getDispositivos().stream().filter(Dispositivo::isHabilitado).collect(Collectors.toList())) {
+        arrayAdapter = new ArrayAdapter<Dispositivo>(this,
+                android.R.layout.simple_list_item_checked,
+                FirebaseUtil.usuario.getDispositivosHabilitados()) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 TextView view = (TextView) super.getView(position, convertView, parent);
@@ -77,26 +69,10 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        btAtivar.setVisibility(isPerfilAtivo(perfil) ? View.GONE : View.VISIBLE);
-        btDesativar.setVisibility(isPerfilAtivo(perfil) ? View.VISIBLE : View.GONE);
-    }
-
-    private boolean isPerfilAtivo(Perfil perfil) {
-        return FirebaseUtil.usuario != null
-                && FirebaseUtil.usuario.getPerfilAtivo() != null
-                && FirebaseUtil.usuario.getPerfilAtivo().getId().equals(perfil.getId());
-    }
-
     public void salvarPerfil(View view) {
         perfil.setNome(etNome.getText().toString());
         perfil.setDispositivosPermitidos(getIdDispositivosSelecionados());
-        FirebaseUtil.salvarUsuario();
-
-        setResult(Activity.RESULT_OK, new Intent());
-        finish();
+        FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> finish());
     }
 
     public void ativarPerfil(View view) {
@@ -113,22 +89,13 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
 
         perfil.setNome(etNome.getText().toString());
         perfil.setDispositivosPermitidos(getIdDispositivosSelecionados());
-        FirebaseUtil.usuario.setPerfilAtivo(perfil);
-        FirebaseUtil.salvarUsuario();
+        FirebaseUtil.usuario.ativarPerfil(perfil);
 
-        Intent intent = new Intent(this, PrincipalActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-    }
-
-    public void desativarPerfil(View view) {
-        perfil.setNome(etNome.getText().toString());
-        perfil.setDispositivosPermitidos(getIdDispositivosSelecionados());
-        FirebaseUtil.usuario.setPerfilAtivo(null);
-        FirebaseUtil.salvarUsuario();
-
-        setResult(Activity.RESULT_OK, new Intent());
-        finish();
+        FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> {
+            Intent intent = new Intent(this, PrincipalActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        });
     }
 
     @NonNull

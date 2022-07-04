@@ -1,17 +1,24 @@
 package com.example.sobcontrole.ui.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sobcontrole.R;
 import com.example.sobcontrole.model.Dispositivo;
+import com.example.sobcontrole.model.Perfil;
+import com.example.sobcontrole.model.Usuario;
 import com.example.sobcontrole.util.FirebaseUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DispositivosActivity extends AppCompatActivity {
 
@@ -72,17 +79,21 @@ public class DispositivosActivity extends AppCompatActivity {
     private void salvarDispositivos() {
         for (int i = 0; i < etDispositivo.length; i++) {
             String nome = etDispositivo[i].getText().toString().trim();
+
             cbDispositivo[i].setChecked(cbDispositivo[i].isChecked() && !nome.isEmpty());
             boolean checkBoxHabilitado = cbDispositivo[i].isChecked();
+
             Dispositivo dispositivo = FirebaseUtil.usuario.getDispositivos().get(i);
             dispositivo.setNome(nome);
             dispositivo.setHabilitado(checkBoxHabilitado);
+
             if (!checkBoxHabilitado) {
-                FirebaseUtil.usuario.getPerfis().forEach(p -> p.getDispositivosPermitidos().remove(dispositivo.getId()));
+                FirebaseUtil.usuario.getPerfis()
+                        .forEach(p -> p.getDispositivosPermitidos().remove(dispositivo.getId()));
             }
         }
-        FirebaseUtil.salvarUsuario();
-        finish();
+
+        FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> finish());
     }
 
 }

@@ -1,12 +1,16 @@
 package com.example.sobcontrole.model;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Usuario implements Serializable {
 
@@ -34,6 +38,16 @@ public class Usuario implements Serializable {
         this.nome = nome;
         this.email = email;
         this.perfis = new ArrayList<>();
+    }
+
+    public Usuario(Usuario usuario) {
+        this.id = usuario.getId();
+        this.nome = usuario.getNome();
+        this.email = usuario.getEmail();
+        this.dispositivos = usuario.getDispositivos().stream().map(Dispositivo::new).collect(Collectors.toList());
+        this.perfis = usuario.getPerfis().stream().map(Perfil::new).collect(Collectors.toList());
+        this.perfilAtivo = usuario.getPerfilAtivo() == null ? null : new Perfil(usuario.getPerfilAtivo());
+        this.pin = new Integer(usuario.getPin());
     }
 
     @Exclude
@@ -65,8 +79,16 @@ public class Usuario implements Serializable {
         return dispositivos;
     }
 
+    public void setDispositivos(List<Dispositivo> dispositivos) {
+        this.dispositivos = dispositivos;
+    }
+
     public List<Perfil> getPerfis() {
         return perfis;
+    }
+
+    public void setPerfis(List<Perfil> perfis) {
+        this.perfis = perfis;
     }
 
     public Perfil getPerfilAtivo() {
@@ -100,6 +122,64 @@ public class Usuario implements Serializable {
         }
         if (tempPin < 0) return false;
         return true;
+    }
+
+    public List<Dispositivo> getDispositivosPodemSerExibidos() {
+        if (perfilAtivo == null) {
+            return getDispositivosHabilitados();
+        } else {
+            return dispositivos.stream()
+                    .filter(dispositivo -> perfilAtivo.podeAcessarDispositivo(dispositivo.getId()))
+                    .collect(Collectors.toList());
+        }
+    }
+
+    @NonNull
+    public List<Dispositivo> getDispositivosHabilitados() {
+        return dispositivos.stream()
+                .filter(Dispositivo::isHabilitado)
+                .collect(Collectors.toList());
+    }
+
+    public Perfil getPerfilComId(String id) {
+        return perfis.stream()
+                .filter(perfil -> perfil.getId().equals(id))
+                .findFirst()
+                .orElse(null);
+    }
+
+    public List<Perfil> getPerfisOrdemAlfabetica() {
+        return perfis.stream()
+                .sorted(Comparator.comparing(Perfil::getNome, String.CASE_INSENSITIVE_ORDER))
+                .collect(Collectors.toList());
+    }
+
+    public boolean adicionarPerfil(String nome, List<String> dispositivosPermitidos) {
+        return perfis.add(new Perfil(String.valueOf(perfis.size() + 1), nome, dispositivosPermitidos));
+    }
+
+    public boolean removerPerfil(Perfil perfil) {
+        Perfil perfilEncontrado = getPerfilComId(perfil.getId());
+        if (perfilEncontrado == null) {
+            return false;
+        }
+        if (isPerfilAtivo(perfilEncontrado)) {
+            desativarPerfil();
+        }
+        return perfis.remove(perfilEncontrado);
+    }
+
+    public boolean isPerfilAtivo(Perfil perfil) {
+        if (perfilAtivo == null || perfil == null) return false;
+        return perfilAtivo.equals(perfil);
+    }
+
+    public void ativarPerfil(Perfil perfil) {
+        this.perfilAtivo = getPerfilComId(perfil.getId());
+    }
+
+    public void desativarPerfil() {
+        this.perfilAtivo = null;
     }
 
     @Override
