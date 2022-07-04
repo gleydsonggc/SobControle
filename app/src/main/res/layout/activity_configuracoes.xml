@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".ui.activities.ConfiguracoesActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/activity_configuracoes_tv_central_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="URL da central:"
+            android:textColor="#2196F3"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/activity_configuracoes_et_central_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textUri"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/activity_configuracoes_bt_salvar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="salvarConfiguracoes"
+            android:text="Salvar" />
+
+    </LinearLayout>
+
+</ScrollView>

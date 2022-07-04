@@ -11,6 +11,12 @@ public class RetrofitUtil {
 
     private RetrofitUtil() {}
 
+    public static class RetrofitNaoConfiguradoException extends Exception {
+        public RetrofitNaoConfiguradoException() {
+            super("O Retrofit precisa estar configurado para se comunicar com os dispositivos.");
+        }
+    }
+
     public static void inicializarComBaseUrl(String baseUrl) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
@@ -21,7 +27,13 @@ public class RetrofitUtil {
         retrofitHttp = retrofit.create(RetrofitHttp.class);
     }
 
-    public static Call<String> enviarComando(String id, String cmd) {
+    public static Call<String> enviarComando(String id, String cmd) throws RetrofitNaoConfiguradoException {
+        if (retrofitHttp == null
+                && FirebaseUtil.usuario.getCentralUrl() != null
+                && !FirebaseUtil.usuario.getCentralUrl().isEmpty()) {
+            inicializarComBaseUrl(FirebaseUtil.usuario.getCentralUrl());
+        }
+        if (retrofitHttp == null) throw new RetrofitNaoConfiguradoException();
         return retrofitHttp.enviarComando(id, cmd);
     }
 }

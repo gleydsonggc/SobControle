@@ -21,6 +21,7 @@ public class Usuario implements Serializable {
     private List<Perfil> perfis;
     private Perfil perfilAtivo;
     private Integer pin;
+    private String centralUrl;
 
     public Usuario() {
         inicializarDispositivos();
@@ -48,6 +49,7 @@ public class Usuario implements Serializable {
         this.perfis = usuario.getPerfis().stream().map(Perfil::new).collect(Collectors.toList());
         this.perfilAtivo = usuario.getPerfilAtivo() == null ? null : new Perfil(usuario.getPerfilAtivo());
         this.pin = new Integer(usuario.getPin());
+        this.centralUrl = usuario.getCentralUrl();
     }
 
     @Exclude
@@ -111,6 +113,14 @@ public class Usuario implements Serializable {
         this.pin = pin;
     }
 
+    public String getCentralUrl() {
+        return centralUrl;
+    }
+
+    public void setCentralUrl(String centralUrl) {
+        this.centralUrl = centralUrl;
+    }
+
     public static boolean validaPin(String pin) {
         if (pin == null) return false;
         if (pin.trim().length() != 6) return false;
@@ -124,6 +134,7 @@ public class Usuario implements Serializable {
         return true;
     }
 
+    @Exclude
     public List<Dispositivo> getDispositivosPodemSerExibidos() {
         if (perfilAtivo == null) {
             return getDispositivosHabilitados();
@@ -134,6 +145,7 @@ public class Usuario implements Serializable {
         }
     }
 
+    @Exclude
     @NonNull
     public List<Dispositivo> getDispositivosHabilitados() {
         return dispositivos.stream()
@@ -148,6 +160,7 @@ public class Usuario implements Serializable {
                 .orElse(null);
     }
 
+    @Exclude
     public List<Perfil> getPerfisOrdemAlfabetica() {
         return perfis.stream()
                 .sorted(Comparator.comparing(Perfil::getNome, String.CASE_INSENSITIVE_ORDER))

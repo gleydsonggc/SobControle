@@ -14,6 +14,9 @@
         android:theme="@style/Theme.SobControle"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.activities.ConfiguracoesActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.activities.SplashActivity"
             android:exported="true">
             <intent-filter>

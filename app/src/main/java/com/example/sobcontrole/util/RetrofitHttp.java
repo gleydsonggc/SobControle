@@ -6,7 +6,7 @@ import retrofit2.http.Query;
 
 public interface RetrofitHttp {
 
-    @GET("/controlavel")
+    @GET("/dispositivo")
     Call<String> enviarComando(@Query("id") String id, @Query("cmd") String cmd);
 
 }

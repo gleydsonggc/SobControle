@@ -1,10 +1,5 @@
 package com.example.sobcontrole.ui.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,13 +11,16 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.sobcontrole.R;
 import com.example.sobcontrole.model.Usuario;
 import com.example.sobcontrole.ui.adapters.DispositivoCardRecyclerViewAdapter;
 import com.example.sobcontrole.ui.listeners.FirebaseAuthListener;
 import com.example.sobcontrole.util.FirebaseUtil;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -31,6 +29,7 @@ public class PrincipalActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private DispositivoCardRecyclerViewAdapter adapter;
+    private MenuItem menuConfiguracoes;
     private MenuItem menuMinhaConta;
     private MenuItem menuDispositivos;
     private MenuItem menuPerfis;
@@ -84,6 +83,7 @@ public class PrincipalActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.d(TAG, "onCreateOptionsMenu: start");
         getMenuInflater().inflate(R.menu.activity_principal, menu);
+        menuConfiguracoes = menu.findItem(R.id.activity_principal_menu_item_configuracoes);
         menuMinhaConta = menu.findItem(R.id.activity_principal_menu_item_minhaconta);
         menuDispositivos = menu.findItem(R.id.activity_principal_menu_item_dispositivos);
         menuPerfis = menu.findItem(R.id.activity_principal_menu_item_perfis);
@@ -101,12 +101,14 @@ public class PrincipalActivity extends AppCompatActivity {
 
     private void configurarMenu() {
         if (FirebaseUtil.usuario.getPerfilAtivo() != null) {
+            menuConfiguracoes.setVisible(false);
             menuMinhaConta.setVisible(false);
             menuDispositivos.setVisible(false);
             menuPerfis.setVisible(false);
             menuSair.setVisible(false);
             menuSairPerfil.setVisible(true);
         } else {
+            menuConfiguracoes.setVisible(true);
             menuMinhaConta.setVisible(true);
             menuDispositivos.setVisible(true);
             menuPerfis.setVisible(true);
@@ -118,6 +120,9 @@ public class PrincipalActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.activity_principal_menu_item_configuracoes:
+                startActivity(new Intent(this, ConfiguracoesActivity.class));
+                return true;
             case R.id.activity_principal_menu_item_minhaconta:
                 startActivity(new Intent(this, ContaActivity.class));
                 return true;
