@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.sobcontrole.R;
 import com.example.sobcontrole.model.Dispositivo;
 import com.example.sobcontrole.ui.activities.ConfiguracoesActivity;
-import com.example.sobcontrole.util.RetrofitHttp;
+import com.example.sobcontrole.util.FirebaseUtil;
 import com.example.sobcontrole.util.RetrofitUtil;
 
 import java.util.List;
@@ -32,7 +33,6 @@ import retrofit2.Response;
 public class DispositivoCardRecyclerViewAdapter extends RecyclerView.Adapter<DispositivoCardRecyclerViewAdapter.ViewHolder> {
 
     private List<Dispositivo> dispositivos;
-    private RetrofitHttp retrofitHttp;
     private ProgressDialog progressDialog;
     private Context parentContext;
 
@@ -66,13 +66,17 @@ public class DispositivoCardRecyclerViewAdapter extends RecyclerView.Adapter<Dis
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final TextView textView;
+        private final ImageView imageView;
         private Dispositivo dispositivo;
         private View itemView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            textView = itemView.findViewById(R.id.item_dispositivo_card_tv);
             this.itemView = itemView;
+
+            textView = itemView.findViewById(R.id.item_dispositivo_card_tv);
+            imageView = itemView.findViewById(R.id.item_dispositivo_card_iv);
+
             itemView.setOnClickListener(this);
         }
 
@@ -82,12 +86,18 @@ public class DispositivoCardRecyclerViewAdapter extends RecyclerView.Adapter<Dis
             progressDialog.setContentView(new ProgressBar(v.getContext()));
             progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             try {
-                RetrofitUtil.enviarComando("1", "on").enqueue(new Callback<String>() {
+                String id = dispositivo.getId();
+                String cmd = dispositivo.isLigado() ? "off" : "on";
+                RetrofitUtil.enviarComando(id, cmd).enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         Log.i("Retrofit", "onResponse: resposta=" + response.body());
-                        progressDialog.dismiss();
-                        Toast.makeText(v.getContext(), "Resposta: " + response.body(), Toast.LENGTH_SHORT).show();
+                        dispositivo.setLigado(!dispositivo.isLigado());
+                        FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> {
+                            progressDialog.dismiss();
+                            atualizarCorImageView();
+                            Toast.makeText(v.getContext(), "Resposta: " + response.body(), Toast.LENGTH_SHORT).show();
+                        });
                     }
 
                     @Override
@@ -112,7 +122,15 @@ public class DispositivoCardRecyclerViewAdapter extends RecyclerView.Adapter<Dis
         public void bind(Dispositivo dispositivo) {
             this.dispositivo = dispositivo;
             textView.setText(dispositivo.getNome());
+            atualizarCorImageView();
+        }
+
+        public void atualizarCorImageView() {
+            int corDesligado = Color.argb(255, 196, 200, 204);
+            int corLigado = Color.argb(255, 255, 193, 7);
+            imageView.setColorFilter(dispositivo.isLigado() ? corLigado : corDesligado);
         }
     }
+
 
 }

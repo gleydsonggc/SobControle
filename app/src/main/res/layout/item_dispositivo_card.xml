@@ -24,7 +24,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             app:srcCompat="@drawable/ic_far_lightbulb"
-            app:tint="#FFC107" />
+            app:tint="#C4C8CC" />
 
         <TextView
             android:id="@+id/item_dispositivo_card_tv"

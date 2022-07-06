@@ -8,6 +8,7 @@ public class Dispositivo implements Serializable {
     private String id;
     private String nome;
     private boolean habilitado;
+    private boolean ligado;
     private int rele;
 
     public Dispositivo() {
@@ -24,6 +25,7 @@ public class Dispositivo implements Serializable {
         this.id = dispositivo.getId();
         this.nome = dispositivo.getNome();
         this.habilitado = dispositivo.isHabilitado();
+        this.ligado = dispositivo.isLigado();
         this.rele = dispositivo.getRele();
     }
 
@@ -51,6 +53,14 @@ public class Dispositivo implements Serializable {
         this.habilitado = habilitado;
     }
 
+    public boolean isLigado() {
+        return ligado;
+    }
+
+    public void setLigado(boolean ligado) {
+        this.ligado = ligado;
+    }
+
     public int getRele() {
         return rele;
     }
@@ -65,6 +75,7 @@ public class Dispositivo implements Serializable {
                 "id='" + id + '\'' +
                 ", nome='" + nome + '\'' +
                 ", habilitado=" + habilitado +
+                ", ligado=" + ligado +
                 ", rele=" + rele +
                 '}';
     }
