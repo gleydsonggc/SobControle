@@ -153,6 +153,16 @@ public class Usuario implements Serializable {
                 .collect(Collectors.toList());
     }
 
+    public List<Dispositivo> getDispositivosPodemSerExibidosDoPerfil(String perfilId) {
+        if (perfilId == null || perfilId.isEmpty()) {
+            return getDispositivosHabilitados();
+        }
+        return dispositivos.stream()
+                .filter(Dispositivo::isHabilitado)
+                .filter(dispositivo -> getPerfilComId(perfilId).podeAcessarDispositivo(dispositivo.getId()))
+                .collect(Collectors.toList());
+    }
+
     public Perfil getPerfilComId(String id) {
         return perfis.stream()
                 .filter(perfil -> perfil.getId().equals(id))

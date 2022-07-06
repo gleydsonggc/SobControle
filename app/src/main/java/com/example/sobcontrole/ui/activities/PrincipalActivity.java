@@ -21,6 +21,7 @@ import com.example.sobcontrole.model.Usuario;
 import com.example.sobcontrole.ui.adapters.DispositivoCardRecyclerViewAdapter;
 import com.example.sobcontrole.ui.listeners.FirebaseAuthListener;
 import com.example.sobcontrole.util.FirebaseUtil;
+import com.example.sobcontrole.util.PrefsUtil;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -61,10 +62,10 @@ public class PrincipalActivity extends AppCompatActivity {
                     FirebaseUtil.usuario = tempUsuario;
 
                     if (recyclerView.getAdapter() == null) {
-                        adapter = new DispositivoCardRecyclerViewAdapter(FirebaseUtil.usuario.getDispositivosPodemSerExibidos());
+                        adapter = new DispositivoCardRecyclerViewAdapter(FirebaseUtil.usuario.getDispositivosPodemSerExibidosDoPerfil(PrefsUtil.getIdPerfilAtivoLocalmente(PrincipalActivity.this)));
                         recyclerView.setAdapter(adapter);
                     } else {
-                        adapter.setDispositivos(FirebaseUtil.usuario.getDispositivosPodemSerExibidos());
+                        adapter.setDispositivos(FirebaseUtil.usuario.getDispositivosPodemSerExibidosDoPerfil(PrefsUtil.getIdPerfilAtivoLocalmente(PrincipalActivity.this)));
                         adapter.notifyDataSetChanged();
                     }
 
@@ -100,7 +101,7 @@ public class PrincipalActivity extends AppCompatActivity {
     }
 
     private void configurarMenu() {
-        if (FirebaseUtil.usuario.getPerfilAtivo() != null) {
+        if (!PrefsUtil.getIdPerfilAtivoLocalmente(this.getApplicationContext()).isEmpty()) {
             menuConfiguracoes.setVisible(false);
             menuMinhaConta.setVisible(false);
             menuDispositivos.setVisible(false);
@@ -153,7 +154,7 @@ public class PrincipalActivity extends AppCompatActivity {
                                 Toast.makeText(this, "PIN incorreto.", Toast.LENGTH_SHORT).show();
                                 return;
                             }
-                            FirebaseUtil.usuario.desativarPerfil();
+                            PrefsUtil.salvarIdPerfilAtivoLocalmente(this.getApplicationContext(), "");
                             FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> recreate());
                         })
                         .show();

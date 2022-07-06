@@ -1,6 +1,5 @@
 package com.example.sobcontrole.ui.activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +11,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,12 +18,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.sobcontrole.R;
 import com.example.sobcontrole.model.Dispositivo;
 import com.example.sobcontrole.model.Perfil;
-import com.example.sobcontrole.model.Usuario;
 import com.example.sobcontrole.util.FirebaseUtil;
+import com.example.sobcontrole.util.PrefsUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class PerfilEdicaoActivity extends AppCompatActivity {
 
@@ -89,7 +86,7 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
 
         perfil.setNome(etNome.getText().toString());
         perfil.setDispositivosPermitidos(getIdDispositivosSelecionados());
-        FirebaseUtil.usuario.ativarPerfil(perfil);
+        PrefsUtil.salvarIdPerfilAtivoLocalmente(this.getApplicationContext(), perfil.getId());
 
         FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> {
             Intent intent = new Intent(this, PrincipalActivity.class);
