@@ -30,7 +30,7 @@ public class Usuario implements Serializable {
 
     private void inicializarDispositivos() {
         for (int i = 0; i < dispositivos.size(); i++) {
-            dispositivos.set(i, new Dispositivo(String.valueOf(i + 1), "", false, i + 1));
+            dispositivos.set(i, new Dispositivo(String.valueOf(i + 1), "", false));
         }
     }
 

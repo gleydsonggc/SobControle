@@ -1,7 +1,6 @@
 package com.example.sobcontrole.model;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 public class Dispositivo implements Serializable {
 
@@ -9,16 +8,14 @@ public class Dispositivo implements Serializable {
     private String nome;
     private boolean habilitado;
     private boolean ligado;
-    private int rele;
 
     public Dispositivo() {
     }
 
-    public Dispositivo(String id, String nome, boolean habilitado, int rele) {
+    public Dispositivo(String id, String nome, boolean habilitado) {
         this.id = id;
         this.nome = nome != null ? nome : "";
         this.habilitado = habilitado;
-        this.rele = rele;
     }
 
     public Dispositivo(Dispositivo dispositivo) {
@@ -26,7 +23,6 @@ public class Dispositivo implements Serializable {
         this.nome = dispositivo.getNome();
         this.habilitado = dispositivo.isHabilitado();
         this.ligado = dispositivo.isLigado();
-        this.rele = dispositivo.getRele();
     }
 
     public String getId() {
@@ -61,14 +57,6 @@ public class Dispositivo implements Serializable {
         this.ligado = ligado;
     }
 
-    public int getRele() {
-        return rele;
-    }
-
-    public void setRele(int rele) {
-        this.rele = rele;
-    }
-
     @Override
     public String toString() {
         return "Dispositivo{" +
@@ -76,7 +64,6 @@ public class Dispositivo implements Serializable {
                 ", nome='" + nome + '\'' +
                 ", habilitado=" + habilitado +
                 ", ligado=" + ligado +
-                ", rele=" + rele +
                 '}';
     }
 }
