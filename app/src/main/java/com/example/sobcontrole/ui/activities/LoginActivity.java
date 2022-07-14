@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.example.sobcontrole.R;
 import com.example.sobcontrole.ui.listeners.FirebaseAuthListener;
 import com.example.sobcontrole.util.FirebaseUtil;
+import com.example.sobcontrole.util.LoadingUtil;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -33,7 +34,9 @@ public class LoginActivity extends AppCompatActivity {
         String email = etEmail.getText().toString();
         String senha = etSenha.getText().toString();
 
+        LoadingUtil.mostrar(LoginActivity.this);
         FirebaseUtil.fazerLogin(email, senha).addOnCompleteListener(this, task -> {
+            LoadingUtil.esconder();
             String msg = task.isSuccessful() ? "Login realizado com sucesso." : "Falha ao tentar o login.";
             Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
         });
