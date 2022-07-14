@@ -21,6 +21,7 @@ import com.example.sobcontrole.model.Usuario;
 import com.example.sobcontrole.ui.adapters.DispositivoCardRecyclerViewAdapter;
 import com.example.sobcontrole.ui.listeners.FirebaseAuthListener;
 import com.example.sobcontrole.util.FirebaseUtil;
+import com.example.sobcontrole.util.LoadingUtil;
 import com.example.sobcontrole.util.PrefsUtil;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -53,6 +54,7 @@ public class PrincipalActivity extends AppCompatActivity {
         int qtdColunas = 2;
         recyclerView.setLayoutManager(new GridLayoutManager(this, qtdColunas));
 
+        LoadingUtil.mostrar(PrincipalActivity.this);
         FirebaseUtil.getUsuarioRef().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -70,6 +72,7 @@ public class PrincipalActivity extends AppCompatActivity {
                     }
 
                     menuDeveSerConfigurado = true;
+                    LoadingUtil.esconder();
                     Log.d(TAG, "onDataChange: onCreate");
                 }
             }
