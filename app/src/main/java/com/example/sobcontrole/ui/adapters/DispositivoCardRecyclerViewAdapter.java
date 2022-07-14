@@ -23,6 +23,7 @@ import com.example.sobcontrole.R;
 import com.example.sobcontrole.model.Dispositivo;
 import com.example.sobcontrole.ui.activities.ConfiguracoesActivity;
 import com.example.sobcontrole.util.FirebaseUtil;
+import com.example.sobcontrole.util.LoadingUtil;
 import com.example.sobcontrole.util.RetrofitUtil;
 
 import java.util.List;
@@ -34,7 +35,6 @@ import retrofit2.Response;
 public class DispositivoCardRecyclerViewAdapter extends RecyclerView.Adapter<DispositivoCardRecyclerViewAdapter.ViewHolder> {
 
     private List<Dispositivo> dispositivos;
-    private ProgressDialog progressDialog;
     private Context parentContext;
 
     public DispositivoCardRecyclerViewAdapter(List<Dispositivo> dispositivos) {
@@ -83,9 +83,7 @@ public class DispositivoCardRecyclerViewAdapter extends RecyclerView.Adapter<Dis
 
         @Override
         public void onClick(View v) {
-            progressDialog = ProgressDialog.show(v.getContext(), null, null);
-            progressDialog.setContentView(new ProgressBar(v.getContext()));
-            progressDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            LoadingUtil.mostrar(parentContext);
             try {
                 String id = dispositivo.getId();
                 String cmd = dispositivo.isLigado() ? "off" : "on";
@@ -95,7 +93,7 @@ public class DispositivoCardRecyclerViewAdapter extends RecyclerView.Adapter<Dis
                         Log.i("Retrofit", "onResponse: resposta=" + response.body());
                         dispositivo.setLigado(!dispositivo.isLigado());
                         FirebaseUtil.salvarUsuario().addOnSuccessListener((Activity) parentContext, unused -> {
-                            progressDialog.dismiss();
+                            LoadingUtil.esconder();
                             atualizarCorImageView();
                             Toast.makeText(v.getContext(), "Resposta: " + response.body(), Toast.LENGTH_SHORT).show();
                         });
@@ -104,12 +102,12 @@ public class DispositivoCardRecyclerViewAdapter extends RecyclerView.Adapter<Dis
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
                         Log.e("Retrofit", "onFailure: falhou", t);
-                        progressDialog.dismiss();
-                        Toast.makeText(v.getContext(), "Falha HTTP.", Toast.LENGTH_SHORT).show();
+                        LoadingUtil.esconder();
+                        Toast.makeText(v.getContext(), "Falha ao se comunicar com o dispositivo.", Toast.LENGTH_LONG).show();
                     }
                 });
             } catch (RetrofitUtil.RetrofitNaoConfiguradoException e) {
-                progressDialog.dismiss();
+                LoadingUtil.esconder();
                 new AlertDialog.Builder(parentContext)
                         .setTitle("Central")
                         .setMessage("Informe a URL da central para se comunicar com os dispositivos.")
