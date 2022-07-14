@@ -75,7 +75,7 @@ public class ContaActivity extends AppCompatActivity {
             solicitarSenhaAtual(senhaAtual -> mudarEmailESenha(novoEmail, senhaNova, senhaAtual));
         } else {
             FirebaseUtil.usuario.setNome(novoNome);
-            FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> finish());
+            FirebaseUtil.salvarUsuario().addOnSuccessListener(this, unused -> finish());
         }
     }
 
@@ -87,7 +87,7 @@ public class ContaActivity extends AppCompatActivity {
                         Log.i(TAG, "mudarEmail: e-mail alterado com sucesso.");
                         FirebaseUtil.usuario.setEmail(novoEmail);
                         FirebaseUtil.usuario.setNome(etNome.getText().toString());
-                        FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> finish());
+                        FirebaseUtil.salvarUsuario().addOnSuccessListener(this, unused -> finish());
                     } else {
                         showMessage("Erro ao alterar o e-mail.");
                     }
@@ -105,7 +105,7 @@ public class ContaActivity extends AppCompatActivity {
                             if (task1.isSuccessful()) {
                                 Log.i(TAG, "mudarSenha: senha alterada com sucesso.");
                                 FirebaseUtil.usuario.setNome(etNome.getText().toString());
-                                FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> finish());
+                                FirebaseUtil.salvarUsuario().addOnSuccessListener(this, unused -> finish());
                             } else {
                                 showMessage("Erro ao alterar a senha.");
                             }
@@ -130,7 +130,7 @@ public class ContaActivity extends AppCompatActivity {
                                     if (task2.isSuccessful()) {
                                         Log.i(TAG, "mudarEmailESenha: senha alterada com sucesso.");
                                         FirebaseUtil.usuario.setNome(etNome.getText().toString());
-                                        FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> finish());
+                                        FirebaseUtil.salvarUsuario().addOnSuccessListener(this, unused -> finish());
                                     } else {
                                         showMessage("Erro ao alterar a senha.");
                                     }
