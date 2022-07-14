@@ -51,12 +51,13 @@ public class CadastroActivity extends AppCompatActivity {
         String senha = etSenha.getText().toString();
 
         FirebaseUtil.cadastrarUsuario(email, senha).addOnCompleteListener(this, task -> {
-            String msg = task.isSuccessful() ? "Cadastro realizado com sucesso." : "Falha ao cadastrar.";
-            Toast.makeText(CadastroActivity.this, msg, Toast.LENGTH_SHORT).show();
-
-            if (task.isSuccessful()) {
+            boolean usuarioFoiCadastrado = task.isSuccessful();
+            if (usuarioFoiCadastrado) {
                 FirebaseUtil.mudarDisplayName(nome);
                 FirebaseUtil.cadastrarUsuarioRD(nome, email);
+                Toast.makeText(CadastroActivity.this, "Cadastro realizado com sucesso.", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(CadastroActivity.this, "Falha ao cadastrar", Toast.LENGTH_SHORT).show();
             }
         });
     }
