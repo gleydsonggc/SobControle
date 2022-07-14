@@ -8,6 +8,7 @@ import android.widget.EditText;
 
 import com.example.sobcontrole.R;
 import com.example.sobcontrole.util.FirebaseUtil;
+import com.example.sobcontrole.util.LoadingUtil;
 import com.example.sobcontrole.util.RetrofitUtil;
 
 public class ConfiguracoesActivity extends AppCompatActivity {
@@ -37,12 +38,14 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         }
 
         FirebaseUtil.usuario.setCentralUrl(centralUrl);
+        LoadingUtil.mostrar(ConfiguracoesActivity.this);
         FirebaseUtil.salvarUsuario().addOnSuccessListener(this, unused -> {
             if (centralUrl.isEmpty()) {
                 RetrofitUtil.resetar();
             } else {
                 RetrofitUtil.inicializarComBaseUrl(centralUrl);
             }
+            LoadingUtil.esconder();
             finish();
         });
     }
