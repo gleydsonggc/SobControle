@@ -16,6 +16,7 @@ import com.example.sobcontrole.model.Dispositivo;
 import com.example.sobcontrole.model.Perfil;
 import com.example.sobcontrole.model.Usuario;
 import com.example.sobcontrole.util.FirebaseUtil;
+import com.example.sobcontrole.util.LoadingUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +94,11 @@ public class DispositivosActivity extends AppCompatActivity {
             }
         }
 
-        FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> finish());
+        LoadingUtil.mostrar(DispositivosActivity.this);
+        FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> {
+            LoadingUtil.esconder();
+            finish();
+        });
     }
 
 }
