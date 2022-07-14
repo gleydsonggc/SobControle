@@ -19,7 +19,6 @@ public class Usuario implements Serializable {
     private String email;
     private List<Dispositivo> dispositivos = Arrays.asList(new Dispositivo[8]);
     private List<Perfil> perfis;
-    private Perfil perfilAtivo;
     private Integer pin;
     private String centralUrl;
 
@@ -47,7 +46,6 @@ public class Usuario implements Serializable {
         this.email = usuario.getEmail();
         this.dispositivos = usuario.getDispositivos().stream().map(Dispositivo::new).collect(Collectors.toList());
         this.perfis = usuario.getPerfis().stream().map(Perfil::new).collect(Collectors.toList());
-        this.perfilAtivo = usuario.getPerfilAtivo() == null ? null : new Perfil(usuario.getPerfilAtivo());
         this.pin = new Integer(usuario.getPin());
         this.centralUrl = usuario.getCentralUrl();
     }
@@ -93,14 +91,6 @@ public class Usuario implements Serializable {
         this.perfis = perfis;
     }
 
-    public Perfil getPerfilAtivo() {
-        return perfilAtivo;
-    }
-
-    public void setPerfilAtivo(Perfil perfilAtivo) {
-        this.perfilAtivo = perfilAtivo;
-    }
-
     public Integer getPin() {
         return pin;
     }
@@ -135,17 +125,6 @@ public class Usuario implements Serializable {
     }
 
     @Exclude
-    public List<Dispositivo> getDispositivosPodemSerExibidos() {
-        if (perfilAtivo == null) {
-            return getDispositivosHabilitados();
-        } else {
-            return dispositivos.stream()
-                    .filter(dispositivo -> perfilAtivo.podeAcessarDispositivo(dispositivo.getId()))
-                    .collect(Collectors.toList());
-        }
-    }
-
-    @Exclude
     @NonNull
     public List<Dispositivo> getDispositivosHabilitados() {
         return dispositivos.stream()
@@ -153,7 +132,7 @@ public class Usuario implements Serializable {
                 .collect(Collectors.toList());
     }
 
-    public List<Dispositivo> getDispositivosPodemSerExibidosDoPerfil(String perfilId) {
+    public List<Dispositivo> getDispositivosPodemSerExibidos(String perfilId) {
         if (perfilId == null || perfilId.isEmpty()) {
             return getDispositivosHabilitados();
         }
@@ -186,23 +165,7 @@ public class Usuario implements Serializable {
         if (perfilEncontrado == null) {
             return false;
         }
-        if (isPerfilAtivo(perfilEncontrado)) {
-            desativarPerfil();
-        }
         return perfis.remove(perfilEncontrado);
-    }
-
-    public boolean isPerfilAtivo(Perfil perfil) {
-        if (perfilAtivo == null || perfil == null) return false;
-        return perfilAtivo.equals(perfil);
-    }
-
-    public void ativarPerfil(Perfil perfil) {
-        this.perfilAtivo = getPerfilComId(perfil.getId());
-    }
-
-    public void desativarPerfil() {
-        this.perfilAtivo = null;
     }
 
     @Override
@@ -213,7 +176,6 @@ public class Usuario implements Serializable {
                 ", email='" + email + '\'' +
                 ", dispositivos=" + dispositivos +
                 ", perfis=" + perfis +
-                ", perfilAtivo=" + perfilAtivo +
                 ", pin=" + pin +
                 '}';
     }

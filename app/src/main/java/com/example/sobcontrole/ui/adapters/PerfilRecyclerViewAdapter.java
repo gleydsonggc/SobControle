@@ -90,7 +90,7 @@ public class PerfilRecyclerViewAdapter extends RecyclerView.Adapter<PerfilRecycl
 
         public void bind(Perfil perfil) {
             this.perfil = perfil;
-            textView.setText(perfil.getNome() + (FirebaseUtil.usuario.isPerfilAtivo(perfil) ? " (Ativo)" : ""));
+            textView.setText(perfil.getNome());
         }
     }
 }

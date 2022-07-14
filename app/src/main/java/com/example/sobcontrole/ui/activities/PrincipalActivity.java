@@ -64,10 +64,10 @@ public class PrincipalActivity extends AppCompatActivity {
                     FirebaseUtil.usuario = tempUsuario;
 
                     if (recyclerView.getAdapter() == null) {
-                        adapter = new DispositivoCardRecyclerViewAdapter(FirebaseUtil.usuario.getDispositivosPodemSerExibidosDoPerfil(PrefsUtil.getIdPerfilAtivoLocalmente(PrincipalActivity.this)));
+                        adapter = new DispositivoCardRecyclerViewAdapter(FirebaseUtil.usuario.getDispositivosPodemSerExibidos(PrefsUtil.getIdPerfilAtivoLocalmente(PrincipalActivity.this)));
                         recyclerView.setAdapter(adapter);
                     } else {
-                        adapter.setDispositivos(FirebaseUtil.usuario.getDispositivosPodemSerExibidosDoPerfil(PrefsUtil.getIdPerfilAtivoLocalmente(PrincipalActivity.this)));
+                        adapter.setDispositivos(FirebaseUtil.usuario.getDispositivosPodemSerExibidos(PrefsUtil.getIdPerfilAtivoLocalmente(PrincipalActivity.this)));
                         adapter.notifyDataSetChanged();
                     }
 
