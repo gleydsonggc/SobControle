@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sobcontrole.R;
 import com.example.sobcontrole.util.FirebaseUtil;
+import com.example.sobcontrole.util.LoadingUtil;
 import com.google.android.material.snackbar.Snackbar;
 
 public class ContaActivity extends AppCompatActivity {
@@ -80,6 +81,7 @@ public class ContaActivity extends AppCompatActivity {
     }
 
     private void mudarEmail(String novoEmail, String senhaAtual) {
+        LoadingUtil.mostrar(ContaActivity.this);
         FirebaseUtil.reautenticar(senhaAtual).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 FirebaseUtil.atualizarEmail(novoEmail).addOnCompleteListener(task1 -> {
@@ -87,36 +89,48 @@ public class ContaActivity extends AppCompatActivity {
                         Log.i(TAG, "mudarEmail: e-mail alterado com sucesso.");
                         FirebaseUtil.usuario.setEmail(novoEmail);
                         FirebaseUtil.usuario.setNome(etNome.getText().toString());
-                        FirebaseUtil.salvarUsuario().addOnSuccessListener(this, unused -> finish());
+                        FirebaseUtil.salvarUsuario().addOnSuccessListener(this, unused -> {
+                            LoadingUtil.esconder();
+                            finish();
+                        });
                     } else {
+                        LoadingUtil.esconder();
                         showMessage("Erro ao alterar o e-mail.");
                     }
                 });
             } else {
+                LoadingUtil.esconder();
                 showMessage("Senha incorreta.");
             }
         });
     }
 
     private void mudarSenha(String senhaNova, String senhaAtual) {
+        LoadingUtil.mostrar(ContaActivity.this);
         FirebaseUtil.reautenticar(senhaAtual).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         FirebaseUtil.atualizarSenha(senhaNova).addOnCompleteListener(task1 -> {
                             if (task1.isSuccessful()) {
                                 Log.i(TAG, "mudarSenha: senha alterada com sucesso.");
                                 FirebaseUtil.usuario.setNome(etNome.getText().toString());
-                                FirebaseUtil.salvarUsuario().addOnSuccessListener(this, unused -> finish());
+                                FirebaseUtil.salvarUsuario().addOnSuccessListener(this, unused -> {
+                                    LoadingUtil.esconder();
+                                    finish();
+                                });
                             } else {
+                                LoadingUtil.esconder();
                                 showMessage("Erro ao alterar a senha.");
                             }
                         });
                     } else {
+                        LoadingUtil.esconder();
                         showMessage("Senha incorreta.");
                     }
                 });
     }
 
     private void mudarEmailESenha(String novoEmail, String senhaNova, String senhaAtual) {
+        LoadingUtil.mostrar(ContaActivity.this);
         FirebaseUtil.reautenticar(senhaAtual).addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         FirebaseUtil.atualizarEmail(novoEmail).addOnCompleteListener(task1 -> {
@@ -130,16 +144,22 @@ public class ContaActivity extends AppCompatActivity {
                                     if (task2.isSuccessful()) {
                                         Log.i(TAG, "mudarEmailESenha: senha alterada com sucesso.");
                                         FirebaseUtil.usuario.setNome(etNome.getText().toString());
-                                        FirebaseUtil.salvarUsuario().addOnSuccessListener(this, unused -> finish());
+                                        FirebaseUtil.salvarUsuario().addOnSuccessListener(this, unused -> {
+                                            LoadingUtil.esconder();
+                                            finish();
+                                        });
                                     } else {
+                                        LoadingUtil.esconder();
                                         showMessage("Erro ao alterar a senha.");
                                     }
                                 });
                             } else {
+                                LoadingUtil.esconder();
                                 showMessage("Erro ao alterar o e-mail.");
                             }
                         });
                     } else {
+                        LoadingUtil.esconder();
                         showMessage("Senha incorreta.");
                     }
                 });
