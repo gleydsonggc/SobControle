@@ -19,6 +19,7 @@ import com.example.sobcontrole.R;
 import com.example.sobcontrole.model.Dispositivo;
 import com.example.sobcontrole.model.Perfil;
 import com.example.sobcontrole.util.FirebaseUtil;
+import com.example.sobcontrole.util.LoadingUtil;
 import com.example.sobcontrole.util.PrefsUtil;
 
 import java.util.ArrayList;
@@ -69,7 +70,11 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
     public void salvarPerfil(View view) {
         perfil.setNome(etNome.getText().toString());
         perfil.setDispositivosPermitidos(getIdDispositivosSelecionados());
-        FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> finish());
+        LoadingUtil.mostrar(PerfilEdicaoActivity.this);
+        FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> {
+            LoadingUtil.esconder();
+            finish();
+        });
     }
 
     public void ativarPerfil(View view) {
@@ -88,7 +93,9 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
         perfil.setDispositivosPermitidos(getIdDispositivosSelecionados());
         PrefsUtil.salvarIdPerfilAtivoLocalmente(this.getApplicationContext(), perfil.getId());
 
+        LoadingUtil.mostrar(PerfilEdicaoActivity.this);
         FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> {
+            LoadingUtil.esconder();
             Intent intent = new Intent(this, PrincipalActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

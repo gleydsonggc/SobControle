@@ -20,6 +20,7 @@ import com.example.sobcontrole.model.Dispositivo;
 import com.example.sobcontrole.model.Perfil;
 import com.example.sobcontrole.model.Usuario;
 import com.example.sobcontrole.util.FirebaseUtil;
+import com.example.sobcontrole.util.LoadingUtil;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
@@ -59,7 +60,11 @@ public class PerfilCadastroActivity extends AppCompatActivity {
     public void cadastrarPerfil(View view) {
         String perfilNome = etNome.getText().toString();
         FirebaseUtil.usuario.adicionarPerfil(perfilNome, getIdDispositivosSelecionados());
-        FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> finish());
+        LoadingUtil.mostrar(PerfilCadastroActivity.this);
+        FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> {
+            LoadingUtil.esconder();
+            finish();
+        });
     }
 
     @NonNull

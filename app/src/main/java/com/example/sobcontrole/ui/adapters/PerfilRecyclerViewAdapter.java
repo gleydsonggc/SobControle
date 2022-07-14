@@ -17,6 +17,7 @@ import com.example.sobcontrole.R;
 import com.example.sobcontrole.model.Perfil;
 import com.example.sobcontrole.ui.activities.PerfilEdicaoActivity;
 import com.example.sobcontrole.util.FirebaseUtil;
+import com.example.sobcontrole.util.LoadingUtil;
 
 import java.util.List;
 
@@ -71,7 +72,9 @@ public class PerfilRecyclerViewAdapter extends RecyclerView.Adapter<PerfilRecycl
 
         private void deletarPerfil() {
             FirebaseUtil.usuario.removerPerfil(perfil);
+            LoadingUtil.mostrar(parentContext);
             FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> {
+                LoadingUtil.esconder();
                 setPerfis(FirebaseUtil.usuario.getPerfisOrdemAlfabetica());
                 notifyDataSetChanged();
                 Toast.makeText(itemView.getContext(), "Perfil deletado.", Toast.LENGTH_SHORT).show();
