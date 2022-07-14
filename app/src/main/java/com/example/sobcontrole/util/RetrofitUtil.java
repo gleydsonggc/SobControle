@@ -36,4 +36,8 @@ public class RetrofitUtil {
         if (retrofitHttp == null) throw new RetrofitNaoConfiguradoException();
         return retrofitHttp.enviarComando(id, cmd);
     }
+
+    public static void resetar() {
+        retrofitHttp = null;
+    }
 }

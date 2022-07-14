@@ -21,7 +21,8 @@ public class ConfiguracoesActivity extends AppCompatActivity {
 
         etCentralUrl = findViewById(R.id.activity_configuracoes_et_central_url);
 
-        if (FirebaseUtil.usuario.getCentralUrl() != null && !FirebaseUtil.usuario.getCentralUrl().isEmpty()) {
+        boolean usuarioTemCentralUrl = FirebaseUtil.usuario.getCentralUrl() != null && !FirebaseUtil.usuario.getCentralUrl().isEmpty();
+        if (usuarioTemCentralUrl) {
             etCentralUrl.setText(FirebaseUtil.usuario.getCentralUrl());
         }
     }
@@ -29,14 +30,17 @@ public class ConfiguracoesActivity extends AppCompatActivity {
     public void salvarConfiguracoes(View view) {
         String centralUrl = etCentralUrl.getText().toString().trim();
 
-        if (!centralUrl.isEmpty() && !centralUrl.startsWith("http://")) {
+        boolean urlInformadaEInvalida = !centralUrl.isEmpty() && !centralUrl.startsWith("http://");
+        if (urlInformadaEInvalida) {
             etCentralUrl.setError("A URL deve começar com http://. Exemplo: http://192.168.1.10/");
             return;
         }
 
         FirebaseUtil.usuario.setCentralUrl(centralUrl);
         FirebaseUtil.salvarUsuario().addOnSuccessListener(this, unused -> {
-            if (!centralUrl.isEmpty()) {
+            if (centralUrl.isEmpty()) {
+                RetrofitUtil.resetar();
+            } else {
                 RetrofitUtil.inicializarComBaseUrl(centralUrl);
             }
             finish();
