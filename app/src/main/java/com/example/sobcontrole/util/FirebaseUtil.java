@@ -32,9 +32,7 @@ public class FirebaseUtil {
 
     @NonNull
     public static DatabaseReference getUsuariosRef() {
-        return FirebaseDatabase.getInstance()
-                .getReference()
-                .child("usuarios");
+        return FirebaseDatabase.getInstance().getReference().child("usuarios");
     }
 
     public static FirebaseUser getCurrentUser() {
@@ -76,10 +74,8 @@ public class FirebaseUtil {
         return getCurrentUser().updateProfile(profileUpdates);
     }
 
-    public static void cadastrarUsuarioRD(String nome, String email, String senha) {
-        getUsuariosRef()
-                .child(getCurrentUser().getUid())
-                .setValue(new Usuario(nome, email, senha));
+    public static Task<Void> cadastrarUsuarioRD(String nome, String email) {
+        return getUsuarioRef().setValue(new Usuario(nome, email));
     }
 
 }

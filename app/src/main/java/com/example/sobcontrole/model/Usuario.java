@@ -34,7 +34,7 @@ public class Usuario implements Serializable {
         }
     }
 
-    public Usuario(String nome, String email, String senha) {
+    public Usuario(String nome, String email) {
         inicializarDispositivos();
         this.nome = nome;
         this.email = email;

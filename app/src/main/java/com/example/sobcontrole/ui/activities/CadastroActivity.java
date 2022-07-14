@@ -56,7 +56,7 @@ public class CadastroActivity extends AppCompatActivity {
 
             if (task.isSuccessful()) {
                 FirebaseUtil.mudarDisplayName(nome);
-                FirebaseUtil.cadastrarUsuarioRD(nome, email, senha);
+                FirebaseUtil.cadastrarUsuarioRD(nome, email);
             }
         });
     }
