@@ -158,7 +158,7 @@ public class PrincipalActivity extends AppCompatActivity {
                                 return;
                             }
                             PrefsUtil.salvarIdPerfilAtivoLocalmente(this.getApplicationContext(), "");
-                            FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> recreate());
+                            FirebaseUtil.salvarUsuario().addOnSuccessListener(this, unused -> recreate());
                         })
                         .show();
                 return true;

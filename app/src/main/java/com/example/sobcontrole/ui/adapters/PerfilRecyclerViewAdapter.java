@@ -73,7 +73,7 @@ public class PerfilRecyclerViewAdapter extends RecyclerView.Adapter<PerfilRecycl
         private void deletarPerfil() {
             FirebaseUtil.usuario.removerPerfil(perfil);
             LoadingUtil.mostrar(parentContext);
-            FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> {
+            FirebaseUtil.salvarUsuario().addOnSuccessListener((Activity) parentContext, unused -> {
                 LoadingUtil.esconder();
                 setPerfis(FirebaseUtil.usuario.getPerfisOrdemAlfabetica());
                 notifyDataSetChanged();

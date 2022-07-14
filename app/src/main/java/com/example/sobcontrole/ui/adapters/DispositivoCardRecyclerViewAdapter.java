@@ -1,5 +1,6 @@
 package com.example.sobcontrole.ui.adapters;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -93,7 +94,7 @@ public class DispositivoCardRecyclerViewAdapter extends RecyclerView.Adapter<Dis
                     public void onResponse(Call<String> call, Response<String> response) {
                         Log.i("Retrofit", "onResponse: resposta=" + response.body());
                         dispositivo.setLigado(!dispositivo.isLigado());
-                        FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> {
+                        FirebaseUtil.salvarUsuario().addOnSuccessListener((Activity) parentContext, unused -> {
                             progressDialog.dismiss();
                             atualizarCorImageView();
                             Toast.makeText(v.getContext(), "Resposta: " + response.body(), Toast.LENGTH_SHORT).show();

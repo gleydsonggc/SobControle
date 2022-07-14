@@ -61,7 +61,7 @@ public class PerfilCadastroActivity extends AppCompatActivity {
         String perfilNome = etNome.getText().toString();
         FirebaseUtil.usuario.adicionarPerfil(perfilNome, getIdDispositivosSelecionados());
         LoadingUtil.mostrar(PerfilCadastroActivity.this);
-        FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> {
+        FirebaseUtil.salvarUsuario().addOnSuccessListener(this, unused -> {
             LoadingUtil.esconder();
             finish();
         });

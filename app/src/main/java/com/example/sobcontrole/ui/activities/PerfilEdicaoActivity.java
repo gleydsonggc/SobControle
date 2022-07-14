@@ -71,7 +71,7 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
         perfil.setNome(etNome.getText().toString());
         perfil.setDispositivosPermitidos(getIdDispositivosSelecionados());
         LoadingUtil.mostrar(PerfilEdicaoActivity.this);
-        FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> {
+        FirebaseUtil.salvarUsuario().addOnSuccessListener(this, unused -> {
             LoadingUtil.esconder();
             finish();
         });
@@ -94,7 +94,7 @@ public class PerfilEdicaoActivity extends AppCompatActivity {
         PrefsUtil.salvarIdPerfilAtivoLocalmente(this.getApplicationContext(), perfil.getId());
 
         LoadingUtil.mostrar(PerfilEdicaoActivity.this);
-        FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> {
+        FirebaseUtil.salvarUsuario().addOnSuccessListener(this, unused -> {
             LoadingUtil.esconder();
             Intent intent = new Intent(this, PrincipalActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

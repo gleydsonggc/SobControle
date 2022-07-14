@@ -95,7 +95,7 @@ public class DispositivosActivity extends AppCompatActivity {
         }
 
         LoadingUtil.mostrar(DispositivosActivity.this);
-        FirebaseUtil.salvarUsuario().addOnSuccessListener(unused -> {
+        FirebaseUtil.salvarUsuario().addOnSuccessListener(this, unused -> {
             LoadingUtil.esconder();
             finish();
         });
