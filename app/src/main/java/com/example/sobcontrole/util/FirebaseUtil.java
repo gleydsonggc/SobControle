@@ -44,7 +44,7 @@ public class FirebaseUtil {
     }
 
     public static AuthCredential getCredential(String senhaAtual) {
-        return EmailAuthProvider.getCredential(FirebaseUtil.getCurrentUser().getEmail(), senhaAtual);
+        return EmailAuthProvider.getCredential(getCurrentUser().getEmail(), senhaAtual);
     }
 
     public static Task<Void> reautenticar(String senhaAtual) {
