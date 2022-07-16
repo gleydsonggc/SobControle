@@ -8,6 +8,8 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -17,6 +19,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.sobcontrole.R;
+import com.example.sobcontrole.model.Dispositivo;
 import com.example.sobcontrole.model.Usuario;
 import com.example.sobcontrole.ui.adapters.DispositivoCardRecyclerViewAdapter;
 import com.example.sobcontrole.ui.listeners.FirebaseAuthListener;
@@ -26,6 +29,8 @@ import com.example.sobcontrole.util.PrefsUtil;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.List;
 
 public class PrincipalActivity extends AppCompatActivity {
 
@@ -40,6 +45,7 @@ public class PrincipalActivity extends AppCompatActivity {
     private FirebaseAuthListener authListener;
     private String TAG = PrincipalActivity.class.getCanonicalName();
     private boolean menuDeveSerConfigurado;
+    private Button btConfigurarDispositivos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +55,9 @@ public class PrincipalActivity extends AppCompatActivity {
         setTitle("Sob Controle");
 
         authListener = new FirebaseAuthListener(this);
+
+        btConfigurarDispositivos = findViewById(R.id.activity_principal_bt_configurar_dispositivos);
+        btConfigurarDispositivos.setOnClickListener(v -> startActivity(new Intent(this, DispositivosActivity.class)));
 
         recyclerView = findViewById(R.id.activity_principal_recyclerview);
         int qtdColunas = 2;
@@ -63,11 +72,14 @@ public class PrincipalActivity extends AppCompatActivity {
                     tempUsuario.setId(dataSnapshot.getKey());
                     FirebaseUtil.usuario = tempUsuario;
 
+                    String idPerfilAtivoLocalmente = PrefsUtil.getIdPerfilAtivoLocalmente(PrincipalActivity.this);
+                    List<Dispositivo> dispositivosPodemSerExibidos = FirebaseUtil.usuario.getDispositivosPodemSerExibidos(idPerfilAtivoLocalmente);
+                    btConfigurarDispositivos.setVisibility(dispositivosPodemSerExibidos.isEmpty() && idPerfilAtivoLocalmente.isEmpty() ? View.VISIBLE : View.GONE);
                     if (recyclerView.getAdapter() == null) {
-                        adapter = new DispositivoCardRecyclerViewAdapter(FirebaseUtil.usuario.getDispositivosPodemSerExibidos(PrefsUtil.getIdPerfilAtivoLocalmente(PrincipalActivity.this)));
+                        adapter = new DispositivoCardRecyclerViewAdapter(dispositivosPodemSerExibidos);
                         recyclerView.setAdapter(adapter);
                     } else {
-                        adapter.setDispositivos(FirebaseUtil.usuario.getDispositivosPodemSerExibidos(PrefsUtil.getIdPerfilAtivoLocalmente(PrincipalActivity.this)));
+                        adapter.setDispositivos(dispositivosPodemSerExibidos);
                         adapter.notifyDataSetChanged();
                     }
 
