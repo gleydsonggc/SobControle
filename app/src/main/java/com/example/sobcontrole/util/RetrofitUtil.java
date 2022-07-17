@@ -18,6 +18,11 @@ public class RetrofitUtil {
     }
 
     public static void inicializarComBaseUrl(String baseUrl) {
+        if (baseUrl == null || baseUrl.isEmpty()) {
+            retrofitHttp = null;
+            return;
+        }
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(ScalarsConverterFactory.create())
@@ -37,7 +42,4 @@ public class RetrofitUtil {
         return retrofitHttp.enviarComando(id, cmd);
     }
 
-    public static void resetar() {
-        retrofitHttp = null;
-    }
 }

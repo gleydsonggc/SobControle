@@ -40,11 +40,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         FirebaseUtil.usuario.setCentralUrl(centralUrl);
         LoadingUtil.mostrar(ConfiguracoesActivity.this);
         FirebaseUtil.salvarUsuario().addOnSuccessListener(this, unused -> {
-            if (centralUrl.isEmpty()) {
-                RetrofitUtil.resetar();
-            } else {
-                RetrofitUtil.inicializarComBaseUrl(centralUrl);
-            }
+            RetrofitUtil.inicializarComBaseUrl(centralUrl);
             LoadingUtil.esconder();
             finish();
         });
