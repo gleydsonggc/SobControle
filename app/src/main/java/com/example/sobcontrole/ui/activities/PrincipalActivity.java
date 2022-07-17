@@ -26,6 +26,8 @@ import com.example.sobcontrole.ui.listeners.FirebaseAuthListener;
 import com.example.sobcontrole.util.FirebaseUtil;
 import com.example.sobcontrole.util.LoadingUtil;
 import com.example.sobcontrole.util.PrefsUtil;
+import com.google.android.flexbox.FlexboxLayoutManager;
+import com.google.android.flexbox.JustifyContent;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -60,8 +62,7 @@ public class PrincipalActivity extends AppCompatActivity {
         btConfigurarDispositivos.setOnClickListener(v -> startActivity(new Intent(this, DispositivosActivity.class)));
 
         recyclerView = findViewById(R.id.activity_principal_recyclerview);
-        int qtdColunas = 2;
-        recyclerView.setLayoutManager(new GridLayoutManager(this, qtdColunas));
+        recyclerView.setLayoutManager(new FlexboxLayoutManager(this));
 
         LoadingUtil.mostrar(PrincipalActivity.this);
         FirebaseUtil.getUsuarioRef().addValueEventListener(new ValueEventListener() {
