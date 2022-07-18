@@ -82,9 +82,9 @@ public class ContaActivity extends AppCompatActivity {
 
     private void mudarEmail(String novoEmail, String senhaAtual) {
         LoadingUtil.mostrar(ContaActivity.this);
-        FirebaseUtil.reautenticar(senhaAtual).addOnCompleteListener(task -> {
+        FirebaseUtil.reautenticar(senhaAtual).addOnCompleteListener(this, task -> {
             if (task.isSuccessful()) {
-                FirebaseUtil.atualizarEmail(novoEmail).addOnCompleteListener(task1 -> {
+                FirebaseUtil.atualizarEmail(novoEmail).addOnCompleteListener(this, task1 -> {
                     if (task1.isSuccessful()) {
                         Log.i(TAG, "mudarEmail: e-mail alterado com sucesso.");
                         FirebaseUtil.usuario.setEmail(novoEmail);
@@ -107,9 +107,9 @@ public class ContaActivity extends AppCompatActivity {
 
     private void mudarSenha(String senhaNova, String senhaAtual) {
         LoadingUtil.mostrar(ContaActivity.this);
-        FirebaseUtil.reautenticar(senhaAtual).addOnCompleteListener(task -> {
+        FirebaseUtil.reautenticar(senhaAtual).addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        FirebaseUtil.atualizarSenha(senhaNova).addOnCompleteListener(task1 -> {
+                        FirebaseUtil.atualizarSenha(senhaNova).addOnCompleteListener(this, task1 -> {
                             if (task1.isSuccessful()) {
                                 Log.i(TAG, "mudarSenha: senha alterada com sucesso.");
                                 FirebaseUtil.usuario.setNome(etNome.getText().toString());
@@ -131,16 +131,16 @@ public class ContaActivity extends AppCompatActivity {
 
     private void mudarEmailESenha(String novoEmail, String senhaNova, String senhaAtual) {
         LoadingUtil.mostrar(ContaActivity.this);
-        FirebaseUtil.reautenticar(senhaAtual).addOnCompleteListener(task -> {
+        FirebaseUtil.reautenticar(senhaAtual).addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        FirebaseUtil.atualizarEmail(novoEmail).addOnCompleteListener(task1 -> {
+                        FirebaseUtil.atualizarEmail(novoEmail).addOnCompleteListener(this, task1 -> {
                             if (task1.isSuccessful()) {
                                 Log.i(TAG, "mudarEmailESenha: e-mail alterado com sucesso.");
                                 FirebaseUtil.usuario.setEmail(novoEmail);
                                 FirebaseUtil.usuario.setNome(etNome.getText().toString());
                                 FirebaseUtil.salvarUsuario();
 
-                                FirebaseUtil.atualizarSenha(senhaNova).addOnCompleteListener(task2 -> {
+                                FirebaseUtil.atualizarSenha(senhaNova).addOnCompleteListener(this, task2 -> {
                                     if (task2.isSuccessful()) {
                                         Log.i(TAG, "mudarEmailESenha: senha alterada com sucesso.");
                                         FirebaseUtil.usuario.setNome(etNome.getText().toString());
