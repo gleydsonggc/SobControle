@@ -17,7 +17,7 @@
             android:id="@+id/tv1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Relé 1"
+            android:text="Dispositivo 1"
             android:textColor="#2196F3"
             android:textStyle="bold" />
 
@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/cbDispositivo1"
-            android:text="Relé 2"
+            android:text="Dispositivo 2"
             android:textColor="#2196F3"
             android:textStyle="bold" />
 
@@ -63,7 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/cbDispositivo2"
-            android:text="Relé 3"
+            android:text="Dispositivo 3"
             android:textColor="#2196F3"
             android:textStyle="bold" />
 
@@ -86,7 +86,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/cbDispositivo3"
-            android:text="Relé 4"
+            android:text="Dispositivo 4"
             android:textColor="#2196F3"
             android:textStyle="bold" />
 
@@ -109,7 +109,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/cbDispositivo4"
-            android:text="Relé 5"
+            android:text="Dispositivo 5"
             android:textColor="#2196F3"
             android:textStyle="bold" />
 
@@ -132,7 +132,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/cbDispositivo5"
-            android:text="Relé 6"
+            android:text="Dispositivo 6"
             android:textColor="#2196F3"
             android:textStyle="bold" />
 
@@ -155,7 +155,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/cbDispositivo6"
-            android:text="Relé 7"
+            android:text="Dispositivo 7"
             android:textColor="#2196F3"
             android:textStyle="bold" />
 
@@ -178,7 +178,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/cbDispositivo7"
-            android:text="Relé 8"
+            android:text="Dispositivo 8"
             android:textColor="#2196F3"
             android:textStyle="bold" />
 
