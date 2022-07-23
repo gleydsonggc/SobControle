@@ -1,11 +1,13 @@
 package com.example.sobcontrole.ui.activities;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -168,20 +170,27 @@ public class ContaActivity extends AppCompatActivity {
     private void solicitarSenhaAtual(SenhaCallback senhaCallback) {
         EditText etSenha = new EditText(this);
         etSenha.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        new AlertDialog.Builder(this)
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Senha atual")
                 .setMessage("Informe a senha atual:")
                 .setView(etSenha)
-                .setPositiveButton("OK", (dialog, which) -> {
-                    String senhaAtual = etSenha.getText().toString();
-                    if (senhaAtual.length() < 6) {
-                        etSenha.setError("A senha deve ter no mínimo 6 caracteres");
-                        return;
-                    }
-                    senhaCallback.onCallback(senhaAtual);
-                })
-                .setNegativeButton("Cancelar", (dialog, which) -> {})
-                .show();
+                .setPositiveButton("Ok", null)
+                .setNegativeButton("Cancelar", null)
+                .create();
+        dialog.setOnShowListener(dialogInterface -> {
+            Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+            button.setOnClickListener(view -> {
+                String senhaAtual = etSenha.getText().toString();
+                if (senhaAtual.length() < 6) {
+                    etSenha.setError("A senha deve ter no mínimo 6 caracteres");
+                    return;
+                }
+                senhaCallback.onCallback(senhaAtual);
+                dialog.dismiss();
+            });
+        });
+        dialog.show();
     }
 
     private void showMessage(String message) {
