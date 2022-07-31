@@ -66,6 +66,14 @@
             android:onClick="salvarConta"
             android:text="Salvar" />
 
+        <Button
+            android:id="@+id/activity_conta_bt_deletar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@android:color/darker_gray"
+            android:onClick="deletarConta"
+            android:text="Deletar" />
+
     </LinearLayout>
 
 </ScrollView>

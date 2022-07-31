@@ -78,4 +78,8 @@ public class FirebaseUtil {
         return getUsuarioRef().setValue(new Usuario(nome, email));
     }
 
+    public static Task<Void> deletarUsuarioRD() {
+        return getUsuarioRef().removeValue();
+    }
+
 }

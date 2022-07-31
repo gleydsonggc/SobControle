@@ -1,7 +1,6 @@
 package com.example.sobcontrole.ui.activities;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -40,6 +39,45 @@ public class ContaActivity extends AppCompatActivity {
 
         etNome.setText(FirebaseUtil.usuario.getNome());
         etEmail.setText(FirebaseUtil.usuario.getEmail());
+    }
+
+    public void deletarConta(View view) {
+        new AlertDialog.Builder(this)
+                .setTitle("Deletar conta")
+                .setMessage("Deseja realmente deletar sua conta? Essa ação é irreversível.")
+                .setPositiveButton("Ok", (dialog, which) -> {
+                    solicitarSenhaAtual(senhaAtual -> deletarContaFirebase(senhaAtual));
+                    dialog.dismiss();
+                })
+                .setNegativeButton("Cancelar", null)
+                .show();
+    }
+
+    private void deletarContaFirebase(String senhaAtual) {
+        LoadingUtil.mostrar(ContaActivity.this);
+        FirebaseUtil.reautenticar(senhaAtual).addOnCompleteListener(this, task -> {
+            if (task.isSuccessful()) {
+                FirebaseUtil.deletarUsuarioRD().addOnCompleteListener(this, task1 -> {
+                    if (task1.isSuccessful()) {
+                        FirebaseUtil.getCurrentUser().delete().addOnCompleteListener(this, task2 -> {
+                            if (task2.isSuccessful()) {
+                                LoadingUtil.esconder();
+                                finish();
+                            } else {
+                                LoadingUtil.esconder();
+                                showMessage("Não foi possível deletar o usuário.");
+                            }
+                        });
+                    } else {
+                        LoadingUtil.esconder();
+                        showMessage("Não foi possível deletar o usuário.");
+                    }
+                });
+            } else {
+                LoadingUtil.esconder();
+                showMessage("Senha incorreta.");
+            }
+        });
     }
 
     public void salvarConta(View view) {
