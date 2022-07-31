@@ -3,6 +3,7 @@ package com.example.sobcontrole.ui.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -33,6 +34,24 @@ public class LoginActivity extends AppCompatActivity {
     public void entrar(View view) {
         String email = etEmail.getText().toString();
         String senha = etSenha.getText().toString();
+        boolean validacaoFalhou = false;
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            etEmail.setError("E-mail inválido.");
+            validacaoFalhou = true;
+        }
+
+        if (email.isEmpty()) {
+            etEmail.setError("Informe o e-mail.");
+            validacaoFalhou = true;
+        }
+
+        if (senha.isEmpty()) {
+            etSenha.setError("Informe a senha.");
+            validacaoFalhou = true;
+        }
+
+        if (validacaoFalhou) return;
 
         LoadingUtil.mostrar(LoginActivity.this);
         FirebaseUtil.fazerLogin(email, senha).addOnCompleteListener(this, task -> {
