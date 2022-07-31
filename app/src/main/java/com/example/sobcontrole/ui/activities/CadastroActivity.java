@@ -1,6 +1,7 @@
 package com.example.sobcontrole.ui.activities;
 
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -50,6 +51,34 @@ public class CadastroActivity extends AppCompatActivity {
         String nome = etNome.getText().toString();
         String email = etEmail.getText().toString();
         String senha = etSenha.getText().toString();
+        boolean validacaoFalhou = false;
+
+        if (nome.isEmpty()) {
+            etNome.setError("Informe o nome.");
+            validacaoFalhou = true;
+        }
+
+        if (email.isEmpty()) {
+            etEmail.setError("Informe o e-mail.");
+            validacaoFalhou = true;
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            etEmail.setError("E-mail inválido.");
+            validacaoFalhou = true;
+        }
+
+        if (senha.isEmpty()) {
+            etSenha.setError("Informe a senha.");
+            validacaoFalhou = true;
+        }
+
+        if (!senha.isEmpty() && senha.length() < 6) {
+            etSenha.setError("A senha deve ter no mínimo 6 caracteres.");
+            validacaoFalhou = true;
+        }
+
+        if (validacaoFalhou) return;
 
         LoadingUtil.mostrar(CadastroActivity.this);
         FirebaseUtil.cadastrarUsuario(email, senha).addOnCompleteListener(this, task -> {
