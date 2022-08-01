@@ -12,6 +12,7 @@ import com.example.sobcontrole.R;
 import com.example.sobcontrole.ui.listeners.FirebaseAuthListener;
 import com.example.sobcontrole.util.FirebaseUtil;
 import com.example.sobcontrole.util.LoadingUtil;
+import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 
@@ -67,6 +68,8 @@ public class LoginActivity extends AppCompatActivity {
                 } else if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                     etSenha.setError("Senha incorreta.");
                     etSenha.requestFocus();
+                } else if (task.getException() instanceof FirebaseTooManyRequestsException) {
+                    Toast.makeText(LoginActivity.this, "Erro: excesso de tentativas, tente novamente mais tarde.", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(LoginActivity.this, "Falha ao tentar o login.", Toast.LENGTH_SHORT).show();
                 }
