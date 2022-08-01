@@ -12,6 +12,8 @@ import com.example.sobcontrole.R;
 import com.example.sobcontrole.ui.listeners.FirebaseAuthListener;
 import com.example.sobcontrole.util.FirebaseUtil;
 import com.example.sobcontrole.util.LoadingUtil;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -56,8 +58,19 @@ public class LoginActivity extends AppCompatActivity {
         LoadingUtil.mostrar(LoginActivity.this);
         FirebaseUtil.fazerLogin(email, senha).addOnCompleteListener(this, task -> {
             LoadingUtil.esconder();
-            String msg = task.isSuccessful() ? "Login realizado com sucesso." : "Falha ao tentar o login.";
-            Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+            if (task.isSuccessful()) {
+                Toast.makeText(LoginActivity.this, "Login realizado com sucesso.", Toast.LENGTH_SHORT).show();
+            } else {
+                if (task.getException() instanceof FirebaseAuthInvalidUserException) {
+                    etEmail.setError("E-mail não cadastrado.");
+                    etEmail.requestFocus();
+                } else if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                    etSenha.setError("Senha incorreta.");
+                    etSenha.requestFocus();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Falha ao tentar o login.", Toast.LENGTH_SHORT).show();
+                }
+            }
         });
     }
 
