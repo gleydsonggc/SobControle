@@ -9,11 +9,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sobcontrole.R;
-import com.example.sobcontrole.model.Usuario;
 import com.example.sobcontrole.ui.listeners.FirebaseAuthListener;
 import com.example.sobcontrole.util.FirebaseUtil;
 import com.example.sobcontrole.util.LoadingUtil;
-import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
 public class CadastroActivity extends AppCompatActivity {
 
@@ -90,7 +89,12 @@ public class CadastroActivity extends AppCompatActivity {
                 Toast.makeText(CadastroActivity.this, "Cadastro realizado com sucesso.", Toast.LENGTH_SHORT).show();
             } else {
                 LoadingUtil.esconder();
-                Toast.makeText(CadastroActivity.this, "Falha ao cadastrar", Toast.LENGTH_SHORT).show();
+                if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                    etEmail.setError("E-mail já cadastrado.");
+                    etEmail.requestFocus();
+                } else {
+                    Toast.makeText(CadastroActivity.this, "Falha ao cadastrar", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
